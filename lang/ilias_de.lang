@@ -1,0 +1,89 @@
+// 
+// German Language File for MediaGalleryObject Plugin
+//
+
+<!-- language file start -->
+obj_xmg#:#Mediengalerie
+objs_xmg#:#Mediengalerie
+obj_xmg_duplicate#:#Kopieren
+objs_xmg_duplicate#:#Kopiere Galerie
+obj_xmg_select#:#Wähle Galerie
+xmg_add#:#Füge Mediengalerie hinzu
+xmg_new#:#Neue Mediengalerie
+xmg_read#:#Mediengalerie ansehen
+xmg_write#:#Mediengalerie bearbeiten
+xmg_delete#:#Mediengalerie löschen
+xmg_visible#:#Mediengalerie ist sichtbar
+xmg_edit_permission#:#Ändere Rechte
+mediagallery_plugin_configuration#:#MediaGallery Plugin Konfiguration
+ext_img#:#Erlaubte Bild-Erweiterungen
+ext_vid#:#Erlaubte Video-Erweiterungen
+ext_aud#:#Erlaubte Audio-Erweiterungen
+image_files#:#Bilddateien
+video_files#:#Videodateien
+audio_files#:#Audiodateien
+configuration_saved#:#Die Konfiguration wurde erfolgreich gespeichert.
+audio#:#Audio
+video#:#Video
+image#:#Bild
+gallery#:#Mediengalerie
+upload_file_alert#:#Sie müssen mindestens eine Datei zum Hochladen hinzufügen.
+unknown#:#Unbekannt
+save_all#:#Alles speichern
+filename#:#Dateiname
+show_title#:#Titel anzeigen
+show_title_description#:#Zeigt den Titel eines Medienobjektes in der Vorschau der Mediengalerie an.
+sort#:#Sortierung
+id#:#ID
+all_media_types#:#Alle Mediendateien
+media_type#:#Medientyp
+please_select_file_to_delete#:#Bitte wählen Sie mindestens eine Mediendatei zum Löschen aus.
+file_deleted#:#%s Mediendatei wurde gelöscht.
+files_deleted#:#%s Mediendateien wurden gelöscht.
+sort_order#:#Sortierreihenfolge der Mediengalerie
+individual#:#Individuelle Sortierreihenfolge
+topic#:#Thema
+file_data_saved#:#Die Daten zu den Mediendateien wurden erfolgreich gespeichert.
+crs_create_xmg#:#Erzeuge Mediengalerie
+grp_create_xmg#:#Erzeuge Mediengalerie
+fold_create_xmg#:#Erzeuge Mediengalerie
+root_create_xmg#:#Erzeuge Mediengalerie
+cat_create_xmg#:#Erzeuge Mediengalerie
+mediafiles#:#Mediendateien
+content#:#Mediengalerie
+properties#:#Einstellungen
+edit_properties#:#Einstellungen bearbeiten
+title#:#Titel
+description#:#Beschreibung
+save#:#Speichern
+cancel#:#Abbruch
+edit#:#Bearbeiten
+status#:#Status
+offline#:#Offline
+gallery_plugin_configuration#:#Mediengalerie Plugin Konfiguration
+saving_invoked#:#Save procedure has been executed. Please note that this gallery does not save anything to DB.
+neues_album_anlegen#:#Neues Album anlegen
+titel#:#Titel
+album_anlegen#:#Album anlegen
+vom#:#vom
+neues_foto#:#Neues Foto übertragen
+album_loeschen#:#Album löschen
+markierte_loeschen#:#Markierte Bilder löschen
+change_info#:#Albumdaten ändern
+datum#:#Datum
+sichtbarkeit#:#Sichtbarkeit
+oeffentlich#:#öffentlich
+privat#:#privat
+sichern#:#Änderungen &uuml;bernehmen
+markbilder#:#Hier markieren, wenn Sie die markierten Bilder wirklich l&ouml;schen wollen!
+markalbum#:#Hier markieren, wenn Sie das Album mit allen Bildern wirklich l&ouml;schen wollen!
+bild#:#Bild
+oder#:#oder
+mehrere_bilder_senden#:#Mehrere Bilder auf einmal senden
+infomulti#:#Klicken Sie hier um die zu übertragenden Dateien auszuwählen.<br/>Sie können durch Drücken von Strg oder Shift mehrere Dateien auf einmal auswählen.
+uploadliste#:#Upload-Liste
+meine_alben#:#meine Alben
+freie_alben#:#freigegebene Alben
+plugininfo#:#Plugin-Information
+Bild#:#Bild
+Bilder#:#Bilder

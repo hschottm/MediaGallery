@@ -1,0 +1,93 @@
+// 
+// English Language File for MediaGalleryObject Plugin
+//
+
+<!-- language file start -->
+obj_xmg#:#Media Gallery
+objs_xmg#:#Media Gallery
+obj_xmg_duplicate#:#Copy
+objs_xmg_duplicate#:#Copy Media Gallery
+obj_xmg_select#:#Select Media Gallery
+xmg_add#:#Add Media Gallery
+xmg_new#:#Add New Media Gallery
+xmg_read#:#Read access to Media Gallery
+xmg_write#:#Edit Media Gallery
+xmg_delete#:#Delete Media Gallery
+xmg_visible#:#Media Gallery is visible
+xmg_edit_permission#:#Change permission settings
+mediafiles#:#Media files
+mediagallery_plugin_configuration#:#MediaGallery Plugin Configuration
+ext_img#:#Valid image extensions
+ext_vid#:#Valid video extensions
+ext_aud#:#Valid audio extensions
+image_files#:#Image files
+video_files#:#Video files
+audio_files#:#Audio files
+configuration_saved#:#Configuration saved.
+audio#:#Audio
+video#:#Video
+image#:#Image
+gallery#:#Media Gallery
+upload_file_alert#:#You must queue at least one file.
+unknown#:#Unknown
+save_all#:#Save All
+filename#:#Filename
+show_title#:#Show title
+show_title_description#:#Show the title of a media object in the thumbnail view.
+sort#:#Sort order
+id#:#ID
+all_media_types#:#All media types
+media_type#:#Media type
+please_select_file_to_delete#:#Please check at least one media file.
+file_deleted#:#%s media file deleted.
+files_deleted#:#%s media files deleted.
+sort_order#:#Media gallery sort order
+individual#:#Custom sort order
+topic#:#Topic
+file_data_saved#:#The file data has been saved successfully.
+crs_create_xmg#:#Create Media Gallery
+grp_create_xmg#:#Create Media Gallery
+fold_create_xmg#:#Create Media Gallery
+root_create_xmg#:#Create Media Gallery
+cat_create_xmg#:#Create Media Gallery
+content#:#Media Gallery
+properties#:#Properties
+edit_properties#:#Edit Properties
+title#:#Title
+description#:#Description
+option_one#:#Option One
+option_two#:#Option Two
+save#:#Save
+cancel#:#Cancel
+edit#:#Edit
+status#:#Status
+offline#:#Offline
+media gallery_plugin_configuration#:#Media Gallery Plugin Configuration
+setting_1#:#Setting 1
+setting_2#:#Setting 2
+saving_invoked#:#Save procedure has been executed. Please note that this media gallery does not save anything to DB.
+neues_album_anlegen#:#Create new media gallery
+titel#:#Title
+album_anlegen#:#Create media gallery
+vom#:#from
+neues_foto#:#Send new picture
+album_loeschen#:#Delete media gallery
+markierte_loeschen#:#Delete marked pictures
+change_info#:#Change media galleryinfos
+datum#:#Date
+sichtbarkeit#:#Visibility
+oeffentlich#:#public
+privat#:#private
+sichern#:#Save changes
+markbilder#:#Check to delete the selected pictures!
+markalbum#:#Check to delete the media gallery with containing pictures!
+bild#:#Picture
+oder#:#or
+mehrere_bilder_senden#:#Send multiple images at once
+infomulti#:#Click here to open filerequester.<br/>Hold STRG or shift to select multiple files.
+uploadliste#:#Upload-List
+meine_alben#:#my galleries
+freie_alben#:#public galleries
+plugininfo#:#Plugin-Information
+Bild#:#Picture
+Bilder#:#Pictures

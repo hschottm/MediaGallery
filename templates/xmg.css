@@ -1,0 +1,73 @@
+.hide
+{
+	display: none;
+}
+
+.xmg_container {
+	display: inline-block;
+	float: left;
+}
+
+.xmg_show_title {
+	clear: both;
+	text-align: center;
+	display: inline-block;
+	width: 160px;
+	font-size: 80%;
+}
+
+.xmg_thumb {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-left: 5px;
+	margin-right: 5px;
+	width: 160px;
+	height: 160px;
+	display: block;
+	border: 1px #a0a0a0 solid;
+}
+
+.xmg_thumb_inside {
+	background: #ddd;
+	display: block;
+	width: 150px;
+	height: 150px;
+	margin-top: 5px;
+	margin-left: 5px;
+}
+
+.xmg_thumb img {
+}
+
+td.xmg_fn {
+	font-size: 80%;
+}
+
+.xmg_size {
+}
+
+td.xmg_id input {
+	width: 100px;
+	font-size: 90%;
+}
+
+td.xmg_topic input {
+	width: 100px;
+	font-size: 90%;
+}
+
+td.xmg_title input {
+	width: 120px;
+	font-size: 90%;
+}
+
+td.xmg_custom input {
+	width: 50px;
+	text-align: right;
+	font-size: 90%;
+}
+
+td.xmg_desc input {
+	width: 95%;
+	font-size: 90%;
+}
