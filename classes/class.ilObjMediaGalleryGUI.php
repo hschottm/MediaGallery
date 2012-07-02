@@ -62,6 +62,7 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 			case "updateProperties":
 			case "filterMedia":
 			case "resetFilterMedia":
+			case "createMissingPreviews":
 				$this->checkPermission("write");
 				$this->$cmd();
 				break;
@@ -476,8 +477,14 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 		$this->sortkey = $tmpsortkey;
 		$table_gui->setData($mediafiles);
 		$this->tpl->setVariable('ADM_CONTENT', $table_gui->getHTML());	
-//		$this->object->createMissingPreviews();
 	}
+	
+	public function createMissingPreviews()
+	{
+		$this->object->createMissingPreviews();
+		$this->ctrl->redirect($this, 'gallery');
+	}
+	
 
 	public function deleteFile()
 	{

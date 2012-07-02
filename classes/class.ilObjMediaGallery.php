@@ -253,7 +253,9 @@ class ilObjMediaGallery extends ilObjectPlugin
 		{
 			if ($this->hasExtension($file, ilObjMediaGallery::_getConfigurationValue('ext_img')))
 			{
-				$this->createPreviews($file);
+				$file_parts = pathinfo($file);
+				$filename = $file_parts['basename'];
+				$this->createPreviews($filename);
 			}
 			else
 			{
