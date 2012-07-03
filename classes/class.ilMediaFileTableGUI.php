@@ -61,17 +61,17 @@ class ilMediaFileTableGUI extends ilTable2GUI
 		$this->setStyle('table', 'fullwidth');
 		$this->counter = 1;
 		$this->addColumn('','f','1%');
-		$this->addColumn($this->lng->txt("filename"),'filename', '', '', 'xmg_fn');
+		$this->addColumn($this->lng->txt("filename"),'entry', '', '', 'xmg_fn');
 		$this->addColumn('','', '', '', 'xmg_preview');
 		$this->addColumn($this->plugin->txt("sort"),'custom', '', '', 'xmg_custom');
-		$this->addColumn($this->lng->txt("id"),'id', '', '', 'xmg_id');
+		$this->addColumn($this->lng->txt("id"),'media_id', '', '', 'xmg_id');
 		$this->addColumn($this->plugin->txt("topic"),'topic', '', '', 'xmg_topic');
 		$this->addColumn($this->lng->txt("title"),'title', '', '', 'xmg_title');
 		$this->addColumn($this->lng->txt("description"),'description', '', '', 'xmg_desc');
 	
 		$this->setRowTemplate("tpl.mediafiles_row.html", 'Customizing/global/plugins/Services/Repository/RepositoryObject/MediaGallery');
 
-		$this->setDefaultOrderField("filename");
+		$this->setDefaultOrderField("entry");
 		$this->setDefaultOrderDirection("asc");
 		$this->setFilterCommand('filterMedia');
 		$this->setResetCommand('resetFilterMedia');
@@ -80,9 +80,32 @@ class ilMediaFileTableGUI extends ilTable2GUI
 		$this->addCommandButton('saveAllFileData', $this->plugin->txt('save_all'));
 		$this->setFormAction($this->ctrl->getFormAction($a_parent_obj, $a_parent_cmd));
 		$this->setSelectAllCheckbox('file');
+//		$this->setExternalSorting(true);
 
 		$this->enable('header');
 		$this->initFilter();
+	}
+	
+	public function gallerysort($x, $y) 
+	{
+		switch ($this->getOrderDirection())
+		{
+			case 'asc':
+				return strnatcasecmp($x[$this->getOrderField()], $y[$this->getOrderField()]);
+				break;
+			case 'desc':
+				return strnatcasecmp($y[$this->getOrderField()], $x[$this->getOrderField()]);
+				break;
+		}
+		return 0;
+	} 
+
+	protected function prepareOutput()
+	{
+		return;
+		// use this for external sorting
+		$this->determineOffsetAndOrder();
+		uasort($this->row_data, array($this, 'gallerysort'));
 	}
 
 	function numericOrdering($a_field)
