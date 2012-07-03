@@ -37,6 +37,9 @@ sort#:#Sortierung
 id#:#ID
 all_media_types#:#Alle Mediendateien
 media_type#:#Medientyp
+offer_download#:#Als Download anbieten
+offer_download_description#:#Bietet alle Mediendateien als ZIP-komprimierte Datei zum Download an.
+download_media#:#Als ZIP-Archiv herunterladen
 please_select_file_to_delete#:#Bitte wählen Sie mindestens eine Mediendatei zum Löschen aus.
 file_deleted#:#%s Mediendatei wurde gelöscht.
 files_deleted#:#%s Mediendateien wurden gelöscht.

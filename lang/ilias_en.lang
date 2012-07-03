@@ -38,6 +38,9 @@ sort#:#Sort order
 id#:#ID
 all_media_types#:#All media types
 media_type#:#Media type
+offer_download#:#Download files
+offer_download_description#:#Offers all media files as a ZIP-Download
+download_media#:#Download as ZIP archive
 please_select_file_to_delete#:#Please check at least one media file.
 file_deleted#:#%s media file deleted.
 files_deleted#:#%s media files deleted.

@@ -25,6 +25,7 @@ class ilObjMediaGallery extends ilObjectPlugin
 	protected $size_large = 2048;
 	protected $sortorder = 'entry';
 	protected $showTitle = 0;
+	protected $download = 0;
 	
 	/**
 	* Constructor
@@ -81,11 +82,13 @@ class ilObjMediaGallery extends ilObjectPlugin
 			$row = $ilDB->fetchAssoc($result);
 			$this->setShowTitle($row['show_title']);
 			$this->setSortOrder($row['sortorder']);
+			$this->setOfferDownload($row['download']);
 		}
 		else
 		{
 			$this->setShowTitle(0);
 			$this->setSortOrder('entry');
+			$this->setOfferDownload(0);
 		}
 	}
 	
@@ -101,9 +104,9 @@ class ilObjMediaGallery extends ilObjectPlugin
 			array('integer'),
 			array($this->getId())
 		);
-		$result = $ilDB->manipulateF("INSERT INTO rep_robj_xmg_object (obj_fi, sortorder, show_title) VALUES (%s, %s, %s)",
-			array('integer','text','integer'),
-			array($this->getId(), $this->getSortOrder(), $this->getShowTitle())
+		$result = $ilDB->manipulateF("INSERT INTO rep_robj_xmg_object (obj_fi, sortorder, show_title, download) VALUES (%s, %s, %s, %s)",
+			array('integer','text','integer','integer'),
+			array($this->getId(), $this->getSortOrder(), $this->getShowTitle(), $this->getOfferDownload())
 		);
 	}
 	
@@ -139,6 +142,11 @@ class ilObjMediaGallery extends ilObjectPlugin
 		return ($this->showTitle) ? 1 : 0;
 	}
 	
+	public function getOfferDownload()
+	{
+		return ($this->download) ? 1 : 0;
+	}
+	
 	public function setSortOrder($sortorder)
 	{
 		$this->sortorder = $sortorder;
@@ -147,6 +155,11 @@ class ilObjMediaGallery extends ilObjectPlugin
 	public function setShowTitle($showtitle)
 	{
 		$this->showTitle = $showtitle;
+	}
+
+	public function setOfferDownload($download)
+	{
+		$this->download = $download;
 	}
 	
 	private function getDataPath()
@@ -180,7 +193,7 @@ class ilObjMediaGallery extends ilObjectPlugin
 		switch ($location)
 		{
 			case LOCATION_ORIGINALS:
-				$path = $this->getDataPath() . "media/";
+				$path = $this->getDataPath() . "media/originals/";
 				break;
 			case LOCATION_THUMBS:
 				$path = $this->getDataPath() . "media/thumbs/";
@@ -207,7 +220,7 @@ class ilObjMediaGallery extends ilObjectPlugin
 		switch ($location)
 		{
 			case LOCATION_ORIGINALS:
-				$path = $this->getDataPathWeb() . "media/";
+				$path = $this->getDataPathWeb() . "media/originals/";
 				break;
 			case LOCATION_THUMBS:
 				$path = $this->getDataPathWeb() . "media/thumbs/";

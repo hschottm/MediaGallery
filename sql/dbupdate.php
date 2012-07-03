@@ -110,3 +110,18 @@ if(!$ilDB->tableColumnExists('rep_robj_xmg_filedata', 'mtype'))
 }
 
 ?>
+<#6>
+<?php
+
+if(!$ilDB->tableColumnExists('rep_robj_xmg_object', 'download'))
+{
+	$ilDB->addTableColumn("rep_robj_xmg_object",	"download",
+		array(
+			'type' => 'integer',
+			'length'  => 1,
+			'notnull' => true,
+			'default' => 0)
+	);
+}
+
+?>

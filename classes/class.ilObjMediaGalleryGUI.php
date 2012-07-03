@@ -66,6 +66,7 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 				$this->checkPermission("write");
 				$this->$cmd();
 				break;
+			case "download":
 			case "gallery":			// list all commands that need read permission here
 				$this->checkPermission("read");
 				$this->$cmd();
@@ -244,6 +245,10 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 		$st->setInfo($this->txt("show_title_description"));
 		$this->form->addItem($st);
 
+		$download = new ilCheckboxInputGUI($this->txt('offer_download'), 'download');
+		$download->setInfo($this->txt("offer_download_description"));
+		$this->form->addItem($download);
+
 		$this->form->addCommandButton("updateProperties", $this->txt("save"));
 
 		$this->form->setTitle($this->txt("edit_properties"));
@@ -259,6 +264,7 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 		$values["desc"] = $this->object->getDescription();
 		$values["sort"] = $this->object->getSortOrder();
 		$values["show_title"] = $this->object->getShowTitle();
+		$values["download"] = $this->object->getOfferDownload();
 		$this->form->setValuesByArray($values);
 	}
 
@@ -276,6 +282,7 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 			$this->object->setDescription($this->form->getInput("desc"));
 			$this->object->setSortOrder($this->form->getInput("sort"));
 			$this->object->setShowTitle($this->form->getInput("show_title"));
+			$this->object->setOfferDownload($this->form->getInput("download"));
 			$this->object->update();
 			ilUtil::sendSuccess($lng->txt("msg_obj_modified"), true);
 			$ilCtrl->redirect($this, "editProperties");
@@ -425,7 +432,19 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 			$template->setVariable('GALLERY_ELEMENT', $tpl_element->get());
 			$template->parseCurrentBlock();
 		}
+		if ($this->object->getOfferDownload())
+		{
+			$template->setCurrentBlock('download');
+			$template->setVariable('DOWNLOAD_TEXT', $this->plugin->txt('download_media'));
+			$template->setVariable('DOWNLOAD_URL', $this->ctrl->getLinkTarget($this, 'download'));
+			$template->parseCurrentBlock();
+		}
 		$this->tpl->setVariable("ADM_CONTENT", $template->get());
+	}
+	
+	function download()
+	{
+		$this->ctrl->redirect($this, 'gallery');
 	}
 	
 	function filterMedia()
