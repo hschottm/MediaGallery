@@ -1,16 +1,14 @@
 <tr class="{CSS_ROW}">
 	<td class="std" style="vertical-align: top">
 		<input type="checkbox" name="file[]" value="{CB_FILE}" id="cb_{CB_ID}" {VAL_CHECKED} />
+		<input type="hidden" name="width[{ID}]" value="{WIDTH}" />
+		<input type="hidden" name="height[{ID}]" value="{HEIGHT}" />
 	</td>
-	<td class="std xmg_fn" style="vertical-align: top"><div class="xmg_fn">{FILENAME}</div><div class="xmg_size">{SIZE}</div></td>
+	<td class="std xmg_fn" style="vertical-align: top"><div class="xmg_fn"><label for="cb_{CB_ID}">{FILENAME}</label></div><div class="xmg_size"><label for="cb_{CB_ID}">{SIZE}</label></div></td>
 	<td class="std xmg_type" style="vertical-align: top"><img src="{PREVIEW}" height="50px" alt="{TEXT_PREVIEW}"/></td>
 	<td class="std xmg_custom" style="vertical-align: top"><input type="text" name="custom[{ID}]"{CUSTOM} /></td>
 	<td class="std xmg_id" style="vertical-align: top"><input type="text" name="id[{ID}]"{ELEMENT_ID} /></td>
 	<td class="std xmg_topic" style="vertical-align: top"><input type="text" name="topic[{ID}]"{TOPIC} /></td>
 	<td class="std xmg_title" style="vertical-align: top"><input type="text" name="title[{ID}]"{TITLE} /></td>
 	<td class="std xmg_desc" style="vertical-align: top"><input type="text" name="description[{ID}]"{DESCRIPTION} /></td>
-</tr>
-<tr class="{CSS_ROW}">
-	<td class="std" style="vertical-align: top"></td>
-	<td colspan="4" class="std" style="vertical-align: top">{EDIT_FORM}</td>
 </tr>

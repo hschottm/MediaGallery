@@ -36,11 +36,15 @@ show_title#:#Show title
 show_title_description#:#Show the title of a media object in the thumbnail view.
 sort#:#Sort order
 id#:#ID
+size#:#Size
+created#:#Created
+download_archive#:#Offer as download
 all_media_types#:#All media types
 media_type#:#Media type
 offer_download#:#Download files
 offer_download_description#:#Offers all media files as a ZIP-Download
 download_media#:#Download as ZIP archive
+archives#:#Download archives
 please_select_file_to_delete#:#Please check at least one media file.
 file_deleted#:#%s media file deleted.
 files_deleted#:#%s media files deleted.

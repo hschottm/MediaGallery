@@ -162,6 +162,8 @@ class ilMediaFileTableGUI extends ilTable2GUI
 		$this->tpl->setVariable("ELEMENT_ID", $this->getTextFieldValue($data['media_id']));
 		$this->tpl->setVariable("TOPIC", $this->getTextFieldValue($data['topic']));
 		$this->tpl->setVariable("TITLE", $this->getTextFieldValue($data['title']));
+		$this->tpl->setVariable("WIDTH", $this->getTextFieldValue($data['width']));
+		$this->tpl->setVariable("HEIGHT", $this->getTextFieldValue($data['height']));
 		$this->tpl->setVariable("DESCRIPTION", $this->getTextFieldValue($data['description']));
 	}
 	

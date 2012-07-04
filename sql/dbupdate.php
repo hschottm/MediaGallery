@@ -113,15 +113,42 @@ if(!$ilDB->tableColumnExists('rep_robj_xmg_filedata', 'mtype'))
 <#6>
 <?php
 
-if(!$ilDB->tableColumnExists('rep_robj_xmg_object', 'download'))
+if(!$ilDB->tableColumnExists('rep_robj_xmg_filedata', 'width'))
 {
-	$ilDB->addTableColumn("rep_robj_xmg_object",	"download",
+	$ilDB->addTableColumn("rep_robj_xmg_filedata",	"width",
 		array(
 			'type' => 'integer',
-			'length'  => 1,
+			'length'  => 4,
+			'notnull' => true,
+			'default' => 0)
+	);
+	$ilDB->addTableColumn("rep_robj_xmg_filedata",	"height",
+		array(
+			'type' => 'integer',
+			'length'  => 4,
 			'notnull' => true,
 			'default' => 0)
 	);
 }
 
+?>
+<#7>
+<?php
+if (!$ilDB->tableExists('rep_robj_xmg_downloads'))
+{
+	$fields = array (
+	'xmg_id'    => array(
+		'type' => 'integer',
+		'length'  => 4,
+		'notnull' => true,
+		'default' => 0),
+	'filename'   => array(
+		'type' => 'text',
+		'notnull' => true,
+		'length' => 255,
+		'fixed' => false)
+	);
+	$ilDB->createTable('rep_robj_xmg_downloads', $fields);
+	$ilDB->addIndex("rep_robj_xmg_downloads", array("xmg_id"), "i1");
+}
 ?>

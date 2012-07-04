@@ -25,7 +25,6 @@ class ilObjMediaGallery extends ilObjectPlugin
 	protected $size_large = 2048;
 	protected $sortorder = 'entry';
 	protected $showTitle = 0;
-	protected $download = 0;
 	
 	/**
 	* Constructor
@@ -82,13 +81,11 @@ class ilObjMediaGallery extends ilObjectPlugin
 			$row = $ilDB->fetchAssoc($result);
 			$this->setShowTitle($row['show_title']);
 			$this->setSortOrder($row['sortorder']);
-			$this->setOfferDownload($row['download']);
 		}
 		else
 		{
 			$this->setShowTitle(0);
 			$this->setSortOrder('entry');
-			$this->setOfferDownload(0);
 		}
 	}
 	
@@ -104,9 +101,9 @@ class ilObjMediaGallery extends ilObjectPlugin
 			array('integer'),
 			array($this->getId())
 		);
-		$result = $ilDB->manipulateF("INSERT INTO rep_robj_xmg_object (obj_fi, sortorder, show_title, download) VALUES (%s, %s, %s, %s)",
-			array('integer','text','integer','integer'),
-			array($this->getId(), $this->getSortOrder(), $this->getShowTitle(), $this->getOfferDownload())
+		$result = $ilDB->manipulateF("INSERT INTO rep_robj_xmg_object (obj_fi, sortorder, show_title) VALUES (%s, %s, %s)",
+			array('integer','text','integer'),
+			array($this->getId(), $this->getSortOrder(), $this->getShowTitle())
 		);
 	}
 	
@@ -142,11 +139,6 @@ class ilObjMediaGallery extends ilObjectPlugin
 		return ($this->showTitle) ? 1 : 0;
 	}
 	
-	public function getOfferDownload()
-	{
-		return ($this->download) ? 1 : 0;
-	}
-	
 	public function setSortOrder($sortorder)
 	{
 		$this->sortorder = $sortorder;
@@ -157,11 +149,6 @@ class ilObjMediaGallery extends ilObjectPlugin
 		$this->showTitle = $showtitle;
 	}
 
-	public function setOfferDownload($download)
-	{
-		$this->download = $download;
-	}
-	
 	private function getDataPath()
 	{
 		return CLIENT_WEB_DIR . "/mediagallery/" . $this->getId() . "/";
@@ -262,33 +249,57 @@ class ilObjMediaGallery extends ilObjectPlugin
 	
 	public function processNewUpload($file)
 	{
+		$saveData = true;
+		$width = 0;
+		$height = 0;
+		$file_parts = pathinfo($file);
+		$filename = $file_parts['basename'];
 		if ($this->isImage($file))
 		{
 			if ($this->hasExtension($file, ilObjMediaGallery::_getConfigurationValue('ext_img')))
 			{
-				$file_parts = pathinfo($file);
-				$filename = $file_parts['basename'];
+				include_once "./Services/Utilities/classes/class.ilMimeTypeUtil.php";
+				if (ilUtil::deducibleSize(ilMimeTypeUtil::getMimeType("", $file, "")))
+				{
+					$imgsize = getimagesize($file);
+					$width = $imgsize[0];
+					$height = $imgsize[1];
+				}
 				$this->createPreviews($filename);
 			}
 			else
 			{
 				@unlink($file);
+				$saveData = false;
 			}
 		}
 		else if ($this->isAudio($file))
 		{
-			if (!$this->hasExtension($file, ilObjMediaGallery::_getConfigurationValue('ext_aud'))) @unlink($file);
+			if (!$this->hasExtension($file, ilObjMediaGallery::_getConfigurationValue('ext_aud'))) 
+			{
+				@unlink($file);
+				$saveData = false;
+			}
 		}
 		else if ($this->isVideo($file))
 		{
-			if (!$this->hasExtension($file, ilObjMediaGallery::_getConfigurationValue('ext_vid'))) @unlink($file);
+			if (!$this->hasExtension($file, ilObjMediaGallery::_getConfigurationValue('ext_vid')))
+			{
+				@unlink($file);
+				$saveData = false;
+			}
 		}
 		else
 		{
-			if (!$this->hasExtension($file, ilObjMediaGallery::_getConfigurationValue('ext_aud').','.ilObjMediaGallery::_getConfigurationValue('ext_vid').','.ilObjMediaGallery::_getConfigurationValue('ext_img'))) @unlink($file);
+			if (!$this->hasExtension($file, ilObjMediaGallery::_getConfigurationValue('ext_aud').','.ilObjMediaGallery::_getConfigurationValue('ext_vid').','.ilObjMediaGallery::_getConfigurationValue('ext_img')))
+			{
+				@unlink($file);
+				$saveData = false;
+			}
 		}
+		if ($saveData) $this->saveFileData($filename, '', '', $filename, '', $this->getFileDataCount()+1, $width, $height);
 	}
-
+	
 	private function getFilesInDir($a_dir)
 	{
 		$current_dir = opendir($a_dir);
@@ -323,17 +334,33 @@ class ilObjMediaGallery extends ilObjectPlugin
 		);
 	}
 	
-	public function saveFileData($filename, $id, $topic, $title, $description, $custom)
+	public function saveFileData($filename, $id, $topic, $title, $description, $custom, $width, $height)
 	{
 		global $ilDB;
 		$affectedRows = $ilDB->manipulateF("DELETE FROM rep_robj_xmg_filedata WHERE xmg_id = %s AND filename = %s",
 			array('integer','text'),
 			array($this->getId(), $filename)
 		);
-		$result = $ilDB->manipulateF("INSERT INTO rep_robj_xmg_filedata (xmg_id, filename, media_id, topic, title, description, custom) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-			array('integer','text','text','text','text','text','float'),
-			array($this->getId(), $filename, $id, $topic, $title, $description, $custom)
+		$result = $ilDB->manipulateF("INSERT INTO rep_robj_xmg_filedata (xmg_id, filename, media_id, topic, title, description, custom, width, height) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+			array('integer','text','text','text','text','text','float','integer','integer'),
+			array($this->getId(), $filename, $id, $topic, $title, $description, $custom, $width, $height)
 		);
+	}
+	
+	protected function getFileDataCount()
+	{
+		global $ilDB;
+		
+		$result = $ilDB->queryF("SELECT * FROM rep_robj_xmg_filedata WHERE xmg_id = %s",
+			array('integer'),
+			array($this->getId())
+		);
+		return $result->numRows();
+	}
+	
+	public function getArchives()
+	{
+		return array();
 	}
 	
 	public function getMediaFiles($arrFilter = array())

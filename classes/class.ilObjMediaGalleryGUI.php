@@ -63,6 +63,9 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 			case "filterMedia":
 			case "resetFilterMedia":
 			case "createMissingPreviews":
+			case "archives":
+			case "deleteArchive":
+			case "saveAllArchiveData":
 				$this->checkPermission("write");
 				$this->$cmd();
 				break;
@@ -172,6 +175,11 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 			$ilTabs->addTab("gallery", $this->txt("gallery"), $ilCtrl->getLinkTarget($this, "gallery"));
 		}
 
+		if ($ilAccess->checkAccess("write", "", $this->object->getRefId()))
+		{
+			$ilTabs->addTab("archives", $this->txt("archives"), $ilCtrl->getLinkTarget($this, "archives"));
+		}
+
 		// standard info screen tab
 		$this->addInfoTab();
 
@@ -245,10 +253,6 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 		$st->setInfo($this->txt("show_title_description"));
 		$this->form->addItem($st);
 
-		$download = new ilCheckboxInputGUI($this->txt('offer_download'), 'download');
-		$download->setInfo($this->txt("offer_download_description"));
-		$this->form->addItem($download);
-
 		$this->form->addCommandButton("updateProperties", $this->txt("save"));
 
 		$this->form->setTitle($this->txt("edit_properties"));
@@ -264,7 +268,6 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 		$values["desc"] = $this->object->getDescription();
 		$values["sort"] = $this->object->getSortOrder();
 		$values["show_title"] = $this->object->getShowTitle();
-		$values["download"] = $this->object->getOfferDownload();
 		$this->form->setValuesByArray($values);
 	}
 
@@ -282,7 +285,6 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 			$this->object->setDescription($this->form->getInput("desc"));
 			$this->object->setSortOrder($this->form->getInput("sort"));
 			$this->object->setShowTitle($this->form->getInput("show_title"));
-			$this->object->setOfferDownload($this->form->getInput("download"));
 			$this->object->update();
 			ilUtil::sendSuccess($lng->txt("msg_obj_modified"), true);
 			$ilCtrl->redirect($this, "editProperties");
@@ -290,6 +292,28 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 
 		$this->form->setValuesByPost();
 		$tpl->setContent($this->form->getHtml());
+	}
+	
+	function saveAllArchiveData()
+	{
+		
+	}
+	
+	function deleteArchive()
+	{
+		
+	}
+	
+	function archives()
+	{
+		global $ilTabs;
+	
+		$ilTabs->activateTab("archives");
+		$this->plugin->includeClass("class.ilMediaFileDownloadArchivesTableGUI.php");
+		$table_gui = new ilMediaFileDownloadArchivesTableGUI($this, 'archives');
+		$archives = $this->object->getArchives();
+		$table_gui->setData($archives);
+		$this->tpl->setVariable('ADM_CONTENT', $table_gui->getHTML());	
 	}
 
 	function gallerysort($x, $y) 
@@ -318,6 +342,35 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 			if ($this->object->isImage($fn))
 			{
 				$tpl_element = $this->plugin->getTemplate("tpl.gallery.img.html");
+				if ($fdata['width'] > 0 && $fdata['height'] > 0)
+				{
+					$aspect = (1.0*$fdata['width'])/($fdata['height']*1.0);
+					if ($aspect < 1)
+					{
+						$height = 150;
+						$width = round(150.0*$aspect);
+					}
+					else
+					{
+						$width = 150;
+						$height = round(150.0/$aspect);
+					}
+					$tpl_element->setCurrentBlock('size');
+					$tpl_element->setVariable('WIDTH', $width+2);
+					$tpl_element->setVariable('HEIGHT', $height+2);
+					$tpl_element->setVariable('MARGIN_TOP', round((158.0-$height)/2.0));
+					$tpl_element->setVariable('MARGIN_LEFT', round((158.0-$width)/2.0));
+					$tpl_element->parseCurrentBlock();
+				}
+				else
+				{
+					$tpl_element->setCurrentBlock('size');
+					$tpl_element->setVariable('WIDTH', "150");
+					$tpl_element->setVariable('HEIGHT', "150");
+					$tpl_element->setVariable('MARGIN_TOP', "4");
+					$tpl_element->setVariable('MARGIN_LEFT', "4");
+					$tpl_element->parseCurrentBlock();
+				}
 				if ($this->object->getShowTitle())
 				{
 					$tpl_element->setCurrentBlock('show_title');
@@ -339,6 +392,12 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 			else if ($this->object->isAudio($fn))
 			{
 				$tpl_element = $this->plugin->getTemplate("tpl.gallery.aud.html");
+				$tpl_element->setCurrentBlock('size');
+				$tpl_element->setVariable('WIDTH', "150");
+				$tpl_element->setVariable('HEIGHT', "150");
+				$tpl_element->setVariable('MARGIN_TOP', "4");
+				$tpl_element->setVariable('MARGIN_LEFT', "4");
+				$tpl_element->parseCurrentBlock();
 				if ($this->object->getShowTitle())
 				{
 					$tpl_element->setCurrentBlock('show_title');
@@ -365,6 +424,12 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 				{
 					case "mov":
 						$tpl_element = $this->plugin->getTemplate("tpl.gallery.qt.html");
+						$tpl_element->setCurrentBlock('size');
+						$tpl_element->setVariable('WIDTH', "150");
+						$tpl_element->setVariable('HEIGHT', "150");
+						$tpl_element->setVariable('MARGIN_TOP', "4");
+						$tpl_element->setVariable('MARGIN_LEFT', "4");
+						$tpl_element->parseCurrentBlock();
 						if ($this->object->getShowTitle())
 						{
 							$tpl_element->setCurrentBlock('show_title');
@@ -385,6 +450,12 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 						break;
 					default:
 						$tpl_element = $this->plugin->getTemplate("tpl.gallery.vid.html");
+						$tpl_element->setCurrentBlock('size');
+						$tpl_element->setVariable('WIDTH', "150");
+						$tpl_element->setVariable('HEIGHT', "150");
+						$tpl_element->setVariable('MARGIN_TOP', "4");
+						$tpl_element->setVariable('MARGIN_LEFT', "4");
+						$tpl_element->parseCurrentBlock();
 						if ($this->object->getShowTitle())
 						{
 							$tpl_element->setCurrentBlock('show_title');
@@ -409,6 +480,12 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 			else
 			{
 				$tpl_element = $this->plugin->getTemplate("tpl.gallery.vid.html");
+				$tpl_element->setCurrentBlock('size');
+				$tpl_element->setVariable('WIDTH', "150");
+				$tpl_element->setVariable('HEIGHT', "150");
+				$tpl_element->setVariable('MARGIN_TOP', "4");
+				$tpl_element->setVariable('MARGIN_LEFT', "4");
+				$tpl_element->parseCurrentBlock();
 				if ($this->object->getShowTitle())
 				{
 					$tpl_element->setCurrentBlock('show_title');
@@ -432,6 +509,7 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 			$template->setVariable('GALLERY_ELEMENT', $tpl_element->get());
 			$template->parseCurrentBlock();
 		}
+		/*
 		if ($this->object->getOfferDownload())
 		{
 			$template->setCurrentBlock('download');
@@ -439,6 +517,7 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 			$template->setVariable('DOWNLOAD_URL', $this->ctrl->getLinkTarget($this, 'download'));
 			$template->parseCurrentBlock();
 		}
+		*/
 		$this->tpl->setVariable("ADM_CONTENT", $template->get());
 	}
 	
@@ -530,8 +609,10 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 			$file_title = $_POST['title'][$filename];
 			$file_description = $_POST['description'][$filename];
 			$file_custom = $_POST['custom'][$filename];
+			$file_width = $_POST['width'][$filename];
+			$file_height = $_POST['height'][$filename];
 			if (!is_numeric($file_custom)) $file_custom = 0.0;
-			$this->object->saveFileData($filename, $file_id, $file_topic, $file_title, $file_description, $file_custom);
+			$this->object->saveFileData($filename, $file_id, $file_topic, $file_title, $file_description, $file_custom, $file_width, $file_height);
 		}
 		ilUtil::sendSuccess($this->plugin->txt('file_data_saved'), true);
 		$this->ctrl->redirect($this, 'mediafiles');

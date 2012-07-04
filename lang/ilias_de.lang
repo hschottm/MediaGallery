@@ -26,11 +26,15 @@ configuration_saved#:#Die Konfiguration wurde erfolgreich gespeichert.
 audio#:#Audio
 video#:#Video
 image#:#Bild
+archives#:#Download-Archive
 gallery#:#Mediengalerie
+size#:#Größe
 upload_file_alert#:#Sie müssen mindestens eine Datei zum Hochladen hinzufügen.
 unknown#:#Unbekannt
 save_all#:#Alles speichern
 filename#:#Dateiname
+created#:#Erstellt
+download_archive#:#Als Download anbieten
 show_title#:#Titel anzeigen
 show_title_description#:#Zeigt den Titel eines Medienobjektes in der Vorschau der Mediengalerie an.
 sort#:#Sortierung
