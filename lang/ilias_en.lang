@@ -28,6 +28,7 @@ audio#:#Audio
 video#:#Video
 image#:#Image
 gallery#:#Media Gallery
+new_archive#:#Create new download archive
 upload_file_alert#:#You must queue at least one file.
 unknown#:#Unknown
 save_all#:#Save All
@@ -45,13 +46,18 @@ offer_download#:#Download files
 offer_download_description#:#Offers all media files as a ZIP-Download
 download_media#:#Download as ZIP archive
 archives#:#Download archives
+archive#:#Download archive
 please_select_file_to_delete#:#Please check at least one media file.
+please_select_archive_to_delete#:#Please check at least one download archive.
 file_deleted#:#%s media file deleted.
 files_deleted#:#%s media files deleted.
+archive_deleted#:#%s download archive deleted.
+archives_deleted#:#%s download archives deleted.
 sort_order#:#Media gallery sort order
 individual#:#Custom sort order
 topic#:#Topic
 file_data_saved#:#The file data has been saved successfully.
+archive_data_saved#:#The download archive data has been saved successfully.
 crs_create_xmg#:#Create Media Gallery
 grp_create_xmg#:#Create Media Gallery
 fold_create_xmg#:#Create Media Gallery

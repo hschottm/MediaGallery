@@ -27,8 +27,10 @@ audio#:#Audio
 video#:#Video
 image#:#Bild
 archives#:#Download-Archive
+archive#:#Download-Archiv
 gallery#:#Mediengalerie
 size#:#Größe
+new_archive#:#Neues Download-Archiv erstellen
 upload_file_alert#:#Sie müssen mindestens eine Datei zum Hochladen hinzufügen.
 unknown#:#Unbekannt
 save_all#:#Alles speichern
@@ -45,12 +47,16 @@ offer_download#:#Als Download anbieten
 offer_download_description#:#Bietet alle Mediendateien als ZIP-komprimierte Datei zum Download an.
 download_media#:#Als ZIP-Archiv herunterladen
 please_select_file_to_delete#:#Bitte wählen Sie mindestens eine Mediendatei zum Löschen aus.
+please_select_archive_to_delete#:#Bitte wählen Sie mindestens eine Download-Archiv zum Löschen aus.
 file_deleted#:#%s Mediendatei wurde gelöscht.
 files_deleted#:#%s Mediendateien wurden gelöscht.
+archive_deleted#:#%s Download-Archiv wurde gelöscht.
+archives_deleted#:#%s Download-Archive wurden gelöscht.
 sort_order#:#Sortierreihenfolge der Mediengalerie
 individual#:#Individuelle Sortierreihenfolge
 topic#:#Thema
 file_data_saved#:#Die Daten zu den Mediendateien wurden erfolgreich gespeichert.
+archive_data_saved#:#Die Daten zu den Download-Archiven wurden erfolgreich gespeichert.
 crs_create_xmg#:#Erzeuge Mediengalerie
 grp_create_xmg#:#Erzeuge Mediengalerie
 fold_create_xmg#:#Erzeuge Mediengalerie

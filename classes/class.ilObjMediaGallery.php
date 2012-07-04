@@ -195,6 +195,9 @@ class ilObjMediaGallery extends ilObjectPlugin
 			case LOCATION_SIZE_LARGE:
 				$path = $this->getDataPath() . "media/large/";
 				break;
+			case LOCATION_DOWNLOADS:
+				$path = $this->getDataPath() . "media/downloads/";
+				break;
 			default:
 				$path = $this->getDataPath();
 				break;
@@ -337,7 +340,41 @@ class ilObjMediaGallery extends ilObjectPlugin
 			array($this->getId(), $filename)
 		);
 	}
+
+	public function deleteArchive($filename)
+	{
+		global $ilDB;
+		
+		@unlink($this->getPath(LOCATION_DOWNLOADS) . $filename);
+		
+		$affectedRows = $ilDB->manipulateF("DELETE FROM rep_robj_xmg_downloads WHERE xmg_id = %s AND filename = %s",
+			array('integer','text'),
+			array($this->getId(), $filename)
+		);
+	}
 	
+	public function saveArchiveData($downloads)
+	{
+		global $ilDB;
+		$affectedRows = $ilDB->manipulateF("DELETE FROM rep_robj_xmg_downloads WHERE xmg_id = %s",
+			array('integer'),
+			array($this->getId())
+		);
+		if (is_array($downloads))
+		{
+			foreach ($downloads as $filename)
+			{
+				if (strlen($filename))
+				{
+					$result = $ilDB->manipulateF("INSERT INTO rep_robj_xmg_downloads (xmg_id, filename) VALUES (%s, %s)",
+						array('integer','text'),
+						array($this->getId(), $filename)
+					);
+				}
+			}
+		}
+	}
+
 	public function saveFileData($filename, $id, $topic, $title, $description, $custom, $width, $height)
 	{
 		global $ilDB;
@@ -381,6 +418,7 @@ class ilObjMediaGallery extends ilObjectPlugin
 		}
 		foreach ($data as $fn => $filedata)
 		{
+			$data[$fn]['created'] = filectime($this->getPath(LOCATION_DOWNLOADS).$fn);
 			if (in_array($fn, $allowed)) 
 			{
 				$data[$fn]['download'] = true;
@@ -579,6 +617,19 @@ class ilObjMediaGallery extends ilObjectPlugin
 			if (ilObjMediaGallery::_hasExtension($filename, ilObjMediaGallery::_getConfigurationValue('ext_aud'))) return $plugin->txt("audio");
 			return $plugin->txt("unknown");
 		}
+	}
+
+	public function formatBytes($bytes, $precision = 2) 
+	{
+		$units = array('B', 'KB', 'MB', 'GB', 'TB');
+
+		$bytes = max($bytes, 0);
+		$pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+		$pow = min($pow, count($units) - 1);
+
+		$bytes /= pow(1024, $pow);
+
+		return round($bytes, $precision) . ' ' . $units[$pow];
 	}
 }
 ?>

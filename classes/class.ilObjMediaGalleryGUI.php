@@ -66,6 +66,7 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 			case "archives":
 			case "deleteArchive":
 			case "saveAllArchiveData":
+			case "createNewArchive":
 				$this->checkPermission("write");
 				$this->$cmd();
 				break;
@@ -296,26 +297,61 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 	
 	function saveAllArchiveData()
 	{
-		
+		$data = array();
+		if (is_array($_POST['download']))
+		{
+			$data = array_keys($_POST['download']);
+		}
+		$this->object->saveArchiveData($data);
+		ilUtil::sendSuccess($this->plugin->txt('archive_data_saved'), true);
+		$this->ctrl->redirect($this, 'archives');
 	}
 	
 	function deleteArchive()
 	{
-		
+		if (!is_array($_POST['file']))
+		{
+			ilUtil::sendInfo($this->plugin->txt('please_select_archive_to_delete'), true);
+		}
+		else
+		{
+			foreach ($_POST['file'] as $file)
+			{
+				$this->object->deleteArchive($file);
+			}
+			ilUtil::sendSuccess(sprintf((count($_POST['file']) == 1) ? $this->plugin->txt('archive_deleted') : $this->plugin->txt('archives_deleted'), count($_POST['file'])), true);
+		}
+		$this->ctrl->redirect($this, 'archives');
+	}
+	
+	function createNewArchive()
+	{
+		ilUtil::zip($this->object->getPath(LOCATION_ORIGINALS), $this->object->getPath(LOCATION_DOWNLOADS) . ilUtil::getASCIIFilename(sprintf("%s_%s.zip", $this->object->getTitle(), time())), true);
+		$this->ctrl->redirect($this, "archives");
 	}
 	
 	function archives()
 	{
-		global $ilTabs;
+		global $ilTabs, $ilToolbar, $ilCtrl;
 	
 		$ilTabs->activateTab("archives");
 		$this->plugin->includeClass("class.ilMediaFileDownloadArchivesTableGUI.php");
 		$table_gui = new ilMediaFileDownloadArchivesTableGUI($this, 'archives');
 		$archives = $this->object->getArchives();
 		$table_gui->setData($archives);
+
+		$ilToolbar->addButton($this->plugin->txt("new_archive"), $ilCtrl->getLinkTarget($this, "createNewArchive"));
+		$ilToolbar->setFormAction($ilCtrl->getFormAction($this));
+
 		$this->tpl->setVariable('ADM_CONTENT', $table_gui->getHTML());	
 	}
 
+	function download()
+	{
+		ilUtil::deliverFile($this->object->getPath(LOCATION_DOWNLOADS).$_POST['archive'], $_POST['archive']);
+		$this->ctrl->redirect($this, 'gallery');
+	}
+	
 	function gallerysort($x, $y) 
 	{
 		return strnatcasecmp($x[$this->sortkey], $y[$this->sortkey]);
@@ -509,21 +545,28 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 			$template->setVariable('GALLERY_ELEMENT', $tpl_element->get());
 			$template->parseCurrentBlock();
 		}
-		/*
-		if ($this->object->getOfferDownload())
+
+		$archives = $this->object->getArchives();
+		$downloads = array();
+		foreach ($archives as $fn => $fdata)
 		{
-			$template->setCurrentBlock('download');
-			$template->setVariable('DOWNLOAD_TEXT', $this->plugin->txt('download_media'));
-			$template->setVariable('DOWNLOAD_URL', $this->ctrl->getLinkTarget($this, 'download'));
-			$template->parseCurrentBlock();
+			if ($fdata['download'])
+			{
+				$downloads[$fn] = $fn . ' ('.$this->object->formatBytes($fdata['size']).')';
+			}
 		}
-		*/
+		if (count($downloads))
+		{
+			global $ilToolbar, $ilCtrl, $lng;
+			include_once("./Services/Form/classes/class.ilSelectInputGUI.php");
+			$si = new ilSelectInputGUI($this->plugin->txt("archive").':', "archive");
+			$si->setOptions($downloads);
+			$ilToolbar->addInputItem($si, true);
+			$ilToolbar->addFormButton($lng->txt("download"), 'download');
+			$ilToolbar->setFormAction($ilCtrl->getFormAction($this));
+		}
+
 		$this->tpl->setVariable("ADM_CONTENT", $template->get());
-	}
-	
-	function download()
-	{
-		$this->ctrl->redirect($this, 'gallery');
 	}
 	
 	function filterMedia()
