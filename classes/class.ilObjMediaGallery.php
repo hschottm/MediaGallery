@@ -8,6 +8,7 @@ define("LOCATION_THUMBS", 2);
 define("LOCATION_SIZE_SMALL", 3);
 define("LOCATION_SIZE_MEDIUM", 4);
 define("LOCATION_SIZE_LARGE", 5);
+define("LOCATION_DOWNLOADS", 6);
 
 /**
 * Application class for gallery repository object.
@@ -221,6 +222,9 @@ class ilObjMediaGallery extends ilObjectPlugin
 			case LOCATION_SIZE_LARGE:
 				$path = $this->getDataPathWeb() . "media/large/";
 				break;
+			case LOCATION_DOWNLOADS:
+				$path = $this->getDataPathWeb() . "media/downloads/";
+				break;
 			default:
 				$path = $this->getDataPathWeb();
 				break;
@@ -360,7 +364,33 @@ class ilObjMediaGallery extends ilObjectPlugin
 	
 	public function getArchives()
 	{
-		return array();
+		global $ilDB;
+		
+		$data = $this->getFilesInDir($this->getPath(LOCATION_DOWNLOADS));
+		$result = $ilDB->queryF("SELECT * FROM rep_robj_xmg_downloads WHERE xmg_id = %s",
+			array('integer'),
+			array($this->getId())
+		);
+		$allowed = array();
+		if ($result->numRows() > 0)
+		{
+			while ($row = $ilDB->fetchAssoc($result))
+			{
+				array_push($allowed, $row['filename']);
+			}
+		}
+		foreach ($data as $fn => $filedata)
+		{
+			if (in_array($fn, $allowed)) 
+			{
+				$data[$fn]['download'] = true;
+			}
+			else
+			{
+				$data[$fn]['download'] = false;
+			}
+		}
+		return $data;
 	}
 	
 	public function getMediaFiles($arrFilter = array())

@@ -106,7 +106,7 @@ class ilMediaFileDownloadArchivesTableGUI extends ilTable2GUI
 		$this->tpl->setVariable("CB_FILE", ilUtil::prepareFormOutput($data['filename']));
 		$this->tpl->setVariable("FILENAME", ilUtil::prepareFormOutput($data['filename']));
 		$this->tpl->setVariable("SIZE", ilUtil::prepareFormOutput($this->formatBytes($data['size'])));
-		$this->tpl->setVariable("CREATED", "");
+		$this->tpl->setVariable("CREATED", "time");
 		if ($data['download'])
 		{
 			$this->tpl->setVariable("CHECKED_DOWNLOAD", ' checked="checked"');
