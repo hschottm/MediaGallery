@@ -216,7 +216,6 @@ class ilMediaFileTableGUI extends ilTable2GUI
 		// filename
 		$entry = new ilTextInputGUI($this->plugin->txt("filename"), "f_entry");
 		$entry->setMaxLength(64);
-		$entry->setValidationRegexp('/^[^%]+$/is');
 		$entry->setSize(20);
 		$this->addFilterItem($entry);
 		$entry->readFromSession();
@@ -225,7 +224,6 @@ class ilMediaFileTableGUI extends ilTable2GUI
 		// id
 		$mid = new ilTextInputGUI($this->plugin->txt("id"), "f_media_id");
 		$mid->setMaxLength(64);
-		$mid->setValidationRegexp('/^[^%]+$/is');
 		$mid->setSize(20);
 		$this->addFilterItem($mid);
 		$mid->readFromSession();
@@ -234,7 +232,6 @@ class ilMediaFileTableGUI extends ilTable2GUI
 		// topic
 		$topic = new ilTextInputGUI($this->plugin->txt("topic"), "f_topic");
 		$topic->setMaxLength(64);
-		$topic->setValidationRegexp('/^[^%]+$/is');
 		$topic->setSize(20);
 		$this->addFilterItem($topic);
 		$topic->readFromSession();
@@ -243,7 +240,6 @@ class ilMediaFileTableGUI extends ilTable2GUI
 		// title
 		$ti = new ilTextInputGUI($this->plugin->txt("title"), "f_title");
 		$ti->setMaxLength(64);
-		$ti->setValidationRegexp('/^[^%]+$/is');
 		$ti->setSize(20);
 		$this->addFilterItem($ti);
 		$ti->readFromSession();
@@ -253,7 +249,6 @@ class ilMediaFileTableGUI extends ilTable2GUI
 		$ti = new ilTextInputGUI($this->plugin->txt("description"), "f_description");
 		$ti->setMaxLength(64);
 		$ti->setSize(20);
-		$ti->setValidationRegexp('/^[^%]+$/is');
 		$this->addFilterItem($ti);
 		$ti->readFromSession();
 		$this->filter["f_description"] = $ti->getValue();
