@@ -1,3 +1,33 @@
+div.hsu .pp_top,div.hsu .pp_top .pp_middle,div.hsu .pp_top .pp_left,div.hsu .pp_top .pp_right,div.hsu .pp_bottom,div.hsu .pp_bottom .pp_left,div.hsu .pp_bottom .pp_middle,div.hsu .pp_bottom .pp_right{height:13px}
+div.hsu .pp_top .pp_left{background:url(../images/prettyPhoto/hsu/sprite.png) -78px -93px no-repeat}
+div.hsu .pp_top .pp_middle{background:url(../images/prettyPhoto/hsu/sprite_x.png) top left repeat-x}
+div.hsu .pp_top .pp_right{background:url(../images/prettyPhoto/hsu/sprite.png) -112px -93px no-repeat}
+div.hsu .pp_content .ppt{color:#f8f8f8}
+div.hsu .pp_content_container .pp_left{background:url(../images/prettyPhoto/hsu/sprite_y.png) -7px 0 repeat-y;padding-left:13px}
+div.hsu .pp_content_container .pp_right{background:url(../images/prettyPhoto/hsu/sprite_y.png) top right repeat-y;padding-right:13px}
+div.hsu .pp_next:hover{background:url(../images/prettyPhoto/hsu/sprite_next.png) center right no-repeat;cursor:pointer}
+div.hsu .pp_previous:hover{background:url(../images/prettyPhoto/hsu/sprite_prev.png) center left no-repeat;cursor:pointer}
+div.hsu .pp_expand{background:url(../images/prettyPhoto/hsu/sprite.png) 0 -29px no-repeat;cursor:pointer;width:28px;height:28px}
+div.hsu .pp_expand:hover{background:url(../images/prettyPhoto/hsu/sprite.png) 0 -56px no-repeat;cursor:pointer}
+div.hsu .pp_contract{background:url(../images/prettyPhoto/hsu/sprite.png) 0 -84px no-repeat;cursor:pointer;width:28px;height:28px}
+div.hsu .pp_contract:hover{background:url(../images/prettyPhoto/hsu/sprite.png) 0 -113px no-repeat;cursor:pointer}
+div.hsu .pp_close{width:30px;height:30px;background:url(../images/prettyPhoto/hsu/sprite.png) 2px 1px no-repeat;cursor:pointer}
+div.hsu .pp_gallery ul li a{background:url(../images/prettyPhoto/hsu/hsu_thumb.png) center center #f8f8f8;border:1px solid #aaa}
+div.hsu .pp_social{margin-top:7px}
+div.hsu .pp_gallery a.pp_arrow_previous,div.hsu .pp_gallery a.pp_arrow_next{position:static;left:auto}
+div.hsu .pp_nav .pp_play,div.hsu .pp_nav .pp_pause{background:url(../images/prettyPhoto/hsu/sprite.png) -51px 1px no-repeat;height:30px;width:30px}
+div.hsu .pp_nav .pp_pause{background-position:-51px -29px}
+div.hsu a.pp_arrow_previous,div.hsu a.pp_arrow_next{background:url(../images/prettyPhoto/hsu/sprite.png) -31px -3px no-repeat;height:20px;width:20px;margin:4px 0 0}
+div.hsu a.pp_arrow_next{left:52px;background-position:-82px -3px}
+div.hsu .pp_content_container .pp_details{margin-top:5px}
+div.hsu .pp_nav{clear:none;height:30px;width:110px;position:relative}
+div.hsu .pp_nav .currentTextHolder{font-family:Georgia;font-style:italic;color:#999;font-size:11px;left:75px;line-height:25px;position:absolute;top:2px;margin:0;padding:0 0 0 10px}
+div.hsu .pp_close:hover,div.hsu .pp_nav .pp_play:hover,div.hsu .pp_nav .pp_pause:hover,div.hsu .pp_arrow_next:hover,div.hsu .pp_arrow_previous:hover{opacity:0.7}
+div.hsu .pp_description{font-size:11px;font-weight:700;line-height:14px;margin:5px 50px 5px 0}
+div.hsu .pp_bottom .pp_left{background:url(../images/prettyPhoto/hsu/sprite.png) -78px -127px no-repeat}
+div.hsu .pp_bottom .pp_middle{background:url(../images/prettyPhoto/hsu/sprite_x.png) bottom left repeat-x}
+div.hsu .pp_bottom .pp_right{background:url(../images/prettyPhoto/hsu/sprite.png) -112px -127px no-repeat}
+div.hsu .pp_loaderIcon{background:url(../images/prettyPhoto/hsu/loader.gif) center center no-repeat}
 div.pp_default .pp_top,div.pp_default .pp_top .pp_middle,div.pp_default .pp_top .pp_left,div.pp_default .pp_top .pp_right,div.pp_default .pp_bottom,div.pp_default .pp_bottom .pp_left,div.pp_default .pp_bottom .pp_middle,div.pp_default .pp_bottom .pp_right{height:13px}
 div.pp_default .pp_top .pp_left{background:url(../images/prettyPhoto/default/sprite.png) -78px -93px no-repeat}
 div.pp_default .pp_top .pp_middle{background:url(../images/prettyPhoto/default/sprite_x.png) top left repeat-x}
@@ -152,6 +182,10 @@ div.pp_default .pp_content,div.light_rounded .pp_content{background-color:#fff}
 div.pp_default #pp_full_res .pp_inline,div.light_rounded .pp_content .ppt,div.light_rounded #pp_full_res .pp_inline,div.light_square .pp_content .ppt,div.light_square #pp_full_res .pp_inline,div.facebook .pp_content .ppt,div.facebook #pp_full_res .pp_inline{color:#000}
 div.pp_default .pp_gallery ul li a:hover,div.pp_default .pp_gallery ul li.selected a,.pp_gallery ul a:hover,.pp_gallery li.selected a{border-color:#fff}
 div.pp_default .pp_details,div.light_rounded .pp_details,div.dark_rounded .pp_details,div.dark_square .pp_details,div.light_square .pp_details,div.facebook .pp_details{position:relative}
+div.hsu .pp_content,div.light_rounded .pp_content{background-color:#fff}
+div.hsu #pp_full_res .pp_inline,div.light_rounded .pp_content .ppt,div.light_rounded #pp_full_res .pp_inline,div.light_square .pp_content .ppt,div.light_square #pp_full_res .pp_inline,div.facebook .pp_content .ppt,div.facebook #pp_full_res .pp_inline{color:#000}
+div.hsu .pp_gallery ul li a:hover,div.hsu .pp_gallery ul li.selected a,.pp_gallery ul a:hover,.pp_gallery li.selected a{border-color:#fff}
+div.hsu .pp_details,div.light_rounded .pp_details,div.dark_rounded .pp_details,div.dark_square .pp_details,div.light_square .pp_details,div.facebook .pp_details{position:relative}
 div.light_rounded .pp_top .pp_middle,div.light_rounded .pp_content_container .pp_left,div.light_rounded .pp_content_container .pp_right,div.light_rounded .pp_bottom .pp_middle,div.light_square .pp_left,div.light_square .pp_middle,div.light_square .pp_right,div.light_square .pp_content,div.facebook .pp_content{background:#fff}
 div.light_rounded .pp_description,div.light_square .pp_description{margin-right:85px}
 div.light_rounded .pp_gallery a.pp_arrow_previous,div.light_rounded .pp_gallery a.pp_arrow_next,div.dark_rounded .pp_gallery a.pp_arrow_previous,div.dark_rounded .pp_gallery a.pp_arrow_next,div.dark_square .pp_gallery a.pp_arrow_previous,div.dark_square .pp_gallery a.pp_arrow_next,div.light_square .pp_gallery a.pp_arrow_previous,div.light_square .pp_gallery a.pp_arrow_next{margin-top:12px!important}
