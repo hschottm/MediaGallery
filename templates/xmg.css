@@ -12,6 +12,7 @@
 	clear: both;
 	text-align: center;
 	display: inline-block;
+	overflow: hidden;
 	width: 160px;
 	font-size: 80%;
 	background: #cacaca;
