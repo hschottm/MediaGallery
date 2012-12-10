@@ -353,6 +353,46 @@ class ilObjMediaGallery extends ilObjectPlugin
 		);
 	}
 	
+	public function rotate($filename, $direction)
+	{
+		if ($this->isImage($filename))
+		{
+			include_once "./Services/Utilities/classes/class.ilUtil.php";
+			$rotation = ($direction) ? "-90" : "90";
+			$cmd = "-rotate $rotation ";
+
+			$source = ilUtil::escapeShellCmd($this->getPath(LOCATION_THUMBS) . $filename);
+			$target = ilUtil::escapeShellCmd($this->getPath(LOCATION_THUMBS) . $filename);
+			$convert_cmd = $source . " " . $cmd." ".$target;
+			ilUtil::execConvert($convert_cmd);
+
+			$source = ilUtil::escapeShellCmd($this->getPath(LOCATION_SIZE_SMALL) . $filename);
+			$target = ilUtil::escapeShellCmd($this->getPath(LOCATION_SIZE_SMALL) . $filename);
+			$convert_cmd = $source . " " . $cmd." ".$target;
+			ilUtil::execConvert($convert_cmd);
+
+			$source = ilUtil::escapeShellCmd($this->getPath(LOCATION_SIZE_MEDIUM) . $filename);
+			$target = ilUtil::escapeShellCmd($this->getPath(LOCATION_SIZE_MEDIUM) . $filename);
+			$convert_cmd = $source . " " . $cmd." ".$target;
+			ilUtil::execConvert($convert_cmd);
+
+			$source = ilUtil::escapeShellCmd($this->getPath(LOCATION_SIZE_LARGE) . $filename);
+			$target = ilUtil::escapeShellCmd($this->getPath(LOCATION_SIZE_LARGE) . $filename);
+			$convert_cmd = $source . " " . $cmd." ".$target;
+			ilUtil::execConvert($convert_cmd);
+
+			$source = ilUtil::escapeShellCmd($this->getPath(LOCATION_ORIGINALS) . $filename);
+			$target = ilUtil::escapeShellCmd($this->getPath(LOCATION_ORIGINALS) . $filename);
+			$convert_cmd = $source . " " . $cmd." ".$target;
+			ilUtil::execConvert($convert_cmd);
+
+			$imgsize = getimagesize($this->getPath(LOCATION_ORIGINALS) . $filename);
+			$width = $imgsize[0];
+			$height = $imgsize[1];
+			$this->updateFileDataAfterRotate($filename, $width, $height);
+		}
+	}
+	
 	public function saveArchiveData($downloads)
 	{
 		global $ilDB;
@@ -373,6 +413,15 @@ class ilObjMediaGallery extends ilObjectPlugin
 				}
 			}
 		}
+	}
+
+	public function updateFileDataAfterRotate($filename, $width, $height)
+	{
+		global $ilDB;
+		$result = $ilDB->manipulateF("UPDATE rep_robj_xmg_filedata SET width = %s, height = %s WHERE filename = %s",
+			array('integer','integer','text'),
+			array($width, $height, $filename)
+		);
 	}
 
 	public function saveFileData($filename, $id, $topic, $title, $description, $custom, $width, $height)

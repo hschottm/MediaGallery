@@ -422,7 +422,7 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 				}
 				$tpl_element->setVariable('URL_FULLSCREEN', $this->object->getPathWeb(LOCATION_SIZE_LARGE) . $fn);
 				$tpl_element->setVariable('CAPTION', ilUtil::prepareFormOutput($fdata['description']));
-				$tpl_element->setVariable('URL_THUMBNAIL', $this->object->getPathWeb(LOCATION_THUMBS) . $fn);
+				$tpl_element->setVariable('URL_THUMBNAIL', $this->object->getPathWeb(LOCATION_THUMBS) . $fn . "?t=" . time());
 				$tpl_element->setVariable('ALT_THUMBNAIL', ilUtil::prepareFormOutput($fdata['title']));
 			}
 			else if ($this->object->isAudio($fn))
@@ -590,6 +590,14 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 	public function mediafiles()
 	{
 		global $ilTabs;
+		if (strcmp($_GET['action'], 'rotateLeft') && strlen($_GET['id']))
+		{
+			$this->object->rotate($_GET['id'], 0);
+		}
+		else if (strcmp($_GET['action'], 'rotateRight') && strlen($_GET['id']))
+		{
+			$this->object->rotate($_GET['id'], 1);
+		}
 		$this->setSubTabs("mediafiles");
 		$ilTabs->activateTab("mediafiles");
 		$count = $this->object->getMediaObjectCount();

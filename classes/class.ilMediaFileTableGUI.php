@@ -63,6 +63,7 @@ class ilMediaFileTableGUI extends ilTable2GUI
 		$this->addColumn('','f','1%');
 		$this->addColumn($this->lng->txt("filename"),'entry', '', '', 'xmg_fn');
 		$this->addColumn('','', '', '', 'xmg_preview');
+		$this->addColumn('','', '', '', 'xmg_action');
 		$this->addColumn($this->plugin->txt("sort"),'custom', '', '', 'xmg_custom');
 		$this->addColumn($this->lng->txt("id"),'media_id', '', '', 'xmg_id');
 		$this->addColumn($this->plugin->txt("topic"),'topic', '', '', 'xmg_topic');
@@ -137,6 +138,15 @@ class ilMediaFileTableGUI extends ilTable2GUI
 		if ($this->parent_obj->object->isImage($data['entry']))
 		{
 			$this->tpl->setVariable("PREVIEW", $this->parent_obj->object->getPathWeb(LOCATION_THUMBS) . $data['entry']);
+			$this->tpl->setVariable("ROTATE_LEFT", $this->plugin->getDirectory() . '/templates/images/rotate_left.png');
+			$this->ctrl->setParameter($this->parent_obj, "id", $data['entry']);
+			$this->ctrl->setParameter($this->parent_obj, "action", "rotateLeft");
+			$this->tpl->setVariable("URL_ROTATE_LEFT", $this->ctrl->getLinkTarget($this->parent_obj, 'mediafiles'));
+			$this->tpl->setVariable("TEXT_ROTATE_LEFT", $this->lng->txt("rotate_left"));
+			$this->tpl->setVariable("ROTATE_RIGHT", $this->plugin->getDirectory() . '/templates/images/rotate_right.png');
+			$this->ctrl->setParameter($this->parent_obj, "action", "rotateRight");
+			$this->tpl->setVariable("URL_ROTATE_RIGHT", $this->ctrl->getLinkTarget($this->parent_obj, 'mediafiles'));
+			$this->tpl->setVariable("TEXT_ROTATE_RIGHT", $this->lng->txt("rotate_right"));
 		}
 		else if ($this->parent_obj->object->isAudio($data['entry']))
 		{
@@ -150,6 +160,7 @@ class ilMediaFileTableGUI extends ilTable2GUI
 		{
 			$this->tpl->setVariable("PREVIEW", $this->plugin->getDirectory() . '/templates/images/unknown.png');
 		}
+		$this->tpl->setVariable("TIMESTAMP", time());
 		$this->tpl->setVariable("TEXT_PREVIEW", strlen($data['title']) ? ilUtil::prepareFormOutput($data['title']) : ilUtil::prepareFormOutput($data['entry']));
 		$this->tpl->setVariable("ID", $data['entry']);
 		if ($data['custom'] == 0) 
