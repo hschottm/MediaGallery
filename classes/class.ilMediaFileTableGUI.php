@@ -76,7 +76,11 @@ class ilMediaFileTableGUI extends ilTable2GUI
 		$this->setDefaultOrderDirection("asc");
 		$this->setFilterCommand('filterMedia');
 		$this->setResetCommand('resetFilterMedia');
-		
+
+		$this->addMultiCommand('addPreview', $this->plugin->txt('add_preview'));
+		$this->addMultiCommand('createArchiveFromSelection', $this->plugin->txt('add_to_archive'));
+		$this->addMultiCommand('deleteFile', $this->lng->txt('delete'));
+
 		$this->addCommandButton('deleteFile', $this->lng->txt('delete'));
 		$this->addCommandButton('saveAllFileData', $this->plugin->txt('save_all'));
 		$this->setFormAction($this->ctrl->getFormAction($a_parent_obj, $a_parent_cmd));
@@ -135,7 +139,11 @@ class ilMediaFileTableGUI extends ilTable2GUI
 		$this->tpl->setVariable('CB_ID', $this->counter++);
 		$this->tpl->setVariable("CB_FILE", ilUtil::prepareFormOutput($data['entry']));
 		$this->tpl->setVariable("FILENAME", ilUtil::prepareFormOutput($data['entry']));
-		if ($this->parent_obj->object->isImage($data['entry']))
+		if (@file_exists($this->parent_obj->object->getPath(LOCATION_PREVIEWS) . $data['entry']))
+		{
+			$this->tpl->setVariable("PREVIEW", $this->parent_obj->object->getPathWeb(LOCATION_PREVIEWS) . $data['entry']);
+		}
+		else if ($this->parent_obj->object->isImage($data['entry']))
 		{
 			$this->tpl->setVariable("PREVIEW", $this->parent_obj->object->getPathWeb(LOCATION_THUMBS) . $data['entry']);
 			$this->tpl->setVariable("ROTATE_LEFT", $this->plugin->getDirectory() . '/templates/images/rotate_left.png');

@@ -9,6 +9,7 @@ define("LOCATION_SIZE_SMALL", 3);
 define("LOCATION_SIZE_MEDIUM", 4);
 define("LOCATION_SIZE_LARGE", 5);
 define("LOCATION_DOWNLOADS", 6);
+define("LOCATION_PREVIEWS", 7);
 
 /**
 * Application class for gallery repository object.
@@ -26,6 +27,7 @@ class ilObjMediaGallery extends ilObjectPlugin
 	protected $size_large = 2048;
 	protected $sortorder = 'entry';
 	protected $showTitle = 0;
+	protected $download = 0;
 	
 	/**
 	* Constructor
@@ -81,11 +83,13 @@ class ilObjMediaGallery extends ilObjectPlugin
 		{
 			$row = $ilDB->fetchAssoc($result);
 			$this->setShowTitle($row['show_title']);
+			$this->setDownload($row['download']);
 			$this->setSortOrder($row['sortorder']);
 		}
 		else
 		{
 			$this->setShowTitle(0);
+			$this->setDownload(0);
 			$this->setSortOrder('entry');
 		}
 	}
@@ -102,9 +106,9 @@ class ilObjMediaGallery extends ilObjectPlugin
 			array('integer'),
 			array($this->getId())
 		);
-		$result = $ilDB->manipulateF("INSERT INTO rep_robj_xmg_object (obj_fi, sortorder, show_title) VALUES (%s, %s, %s)",
-			array('integer','text','integer'),
-			array($this->getId(), $this->getSortOrder(), $this->getShowTitle())
+		$result = $ilDB->manipulateF("INSERT INTO rep_robj_xmg_object (obj_fi, sortorder, show_title, download) VALUES (%s, %s, %s, %s)",
+			array('integer','text','integer', 'integer'),
+			array($this->getId(), $this->getSortOrder(), $this->getShowTitle(), $this->getDownload())
 		);
 	}
 	
@@ -139,6 +143,11 @@ class ilObjMediaGallery extends ilObjectPlugin
 	{
 		return ($this->showTitle) ? 1 : 0;
 	}
+
+	public function getDownload()
+	{
+		return ($this->download) ? 1 : 0;
+	}
 	
 	public function setSortOrder($sortorder)
 	{
@@ -148,6 +157,11 @@ class ilObjMediaGallery extends ilObjectPlugin
 	public function setShowTitle($showtitle)
 	{
 		$this->showTitle = $showtitle;
+	}
+
+	public function setDownload($download)
+	{
+		$this->download = $download;
 	}
 
 	private function getDataPath()
@@ -198,6 +212,9 @@ class ilObjMediaGallery extends ilObjectPlugin
 			case LOCATION_DOWNLOADS:
 				$path = $this->getDataPath() . "media/downloads/";
 				break;
+			case LOCATION_PREVIEWS:
+				$path = $this->getDataPath() . "media/previews/";
+				break;
 			default:
 				$path = $this->getDataPath();
 				break;
@@ -228,11 +245,13 @@ class ilObjMediaGallery extends ilObjectPlugin
 			case LOCATION_DOWNLOADS:
 				$path = $this->getDataPathWeb() . "media/downloads/";
 				break;
+			case LOCATION_PREVIEWS:
+				$path = $this->getDataPathWeb() . "media/previews/";
+				break;
 			default:
 				$path = $this->getDataPathWeb();
 				break;
 		}
-		if (!@file_exists($path)) ilUtil::makeDirParents($path);
 		return $path;
 	}
 	
@@ -334,6 +353,7 @@ class ilObjMediaGallery extends ilObjectPlugin
 		@unlink($this->getPath(LOCATION_SIZE_SMALL) . $filename);
 		@unlink($this->getPath(LOCATION_SIZE_MEDIUM) . $filename);
 		@unlink($this->getPath(LOCATION_SIZE_LARGE) . $filename);
+		@unlink($this->getPath(LOCATION_SIZE_PREVIEWS) . $filename);
 		
 		$affectedRows = $ilDB->manipulateF("DELETE FROM rep_robj_xmg_filedata WHERE xmg_id = %s AND filename = %s",
 			array('integer','text'),
@@ -351,6 +371,34 @@ class ilObjMediaGallery extends ilObjectPlugin
 			array('integer','text'),
 			array($this->getId(), $filename)
 		);
+	}
+
+	public function downloadArchiveExists($filename)
+	{
+		if (file_exists($this->getPath(LOCATION_DOWNLOADS) . ilUtil::getASCIIFilename($filename)))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	public function renameArchive($old, $new)
+	{
+		rename($this->getPath(LOCATION_DOWNLOADS) . ilUtil::getASCIIFilename($old), $this->getPath(LOCATION_DOWNLOADS) . ilUtil::getASCIIFilename($new));
+	}
+	
+	public function zipSelectedFiles($fileArray, $zipFilename)
+	{
+		$files = array();
+		foreach ($fileArray as $filename)
+		{
+			array_push($files, $this->getPath(LOCATION_ORIGINALS) . $filename);
+		}
+		ilUtil::zip($files, $this->getPath(LOCATION_ORIGINALS) . ilUtil::getASCIIFilename($zipFilename), false);
+		rename($this->getPath(LOCATION_ORIGINALS) . ilUtil::getASCIIFilename($zipFilename), $this->getPath(LOCATION_DOWNLOADS) . ilUtil::getASCIIFilename($zipFilename));
 	}
 	
 	public function rotate($filename, $direction)
@@ -419,6 +467,15 @@ class ilObjMediaGallery extends ilObjectPlugin
 	{
 		global $ilDB;
 		$result = $ilDB->manipulateF("UPDATE rep_robj_xmg_filedata SET width = %s, height = %s WHERE filename = %s",
+			array('integer','integer','text'),
+			array($width, $height, $filename)
+		);
+	}
+
+	public function updatePreviewSize($filename, $width, $height)
+	{
+		global $ilDB;
+		$result = $ilDB->manipulateF("UPDATE rep_robj_xmg_filedata SET pwidth = %s, pheight = %s WHERE filename = %s",
 			array('integer','integer','text'),
 			array($width, $height, $filename)
 		);
@@ -573,6 +630,35 @@ class ilObjMediaGallery extends ilObjectPlugin
 			ilUtil::resizeImage($this->getPath(LOCATION_ORIGINALS) . $filename, $this->getPath(LOCATION_SIZE_SMALL) . $filename, $this->size_small, $this->size_small, true);
 			ilUtil::resizeImage($this->getPath(LOCATION_ORIGINALS) . $filename, $this->getPath(LOCATION_SIZE_MEDIUM) . $filename, $this->size_medium, $this->size_medium, true);
 			ilUtil::resizeImage($this->getPath(LOCATION_ORIGINALS) . $filename, $this->getPath(LOCATION_SIZE_LARGE) . $filename, $this->size_large, $this->size_large, true);
+		}
+	}
+	
+	public function uploadPreviewForFiles($filenames, $tempfile)
+	{
+		if (is_array($filenames))
+		{
+			$first = true;
+			$preview_filename = '';
+			$width = 0;
+			$height = 0;
+			foreach ($filenames as $filename)
+			{
+				if ($first)
+				{
+					$preview_filename = $this->getPath(LOCATION_PREVIEWS) . $filename;
+					@move_uploaded_file($tempfile, $preview_filename);
+					$imgsize = getimagesize($preview_filename);
+					$width = $imgsize[0];
+					$height = $imgsize[1];
+					$this->updatePreviewSize($filename, $width, $height);
+					$first = false;
+				}
+				else
+				{
+					@copy($preview_filename, $this->getPath(LOCATION_PREVIEWS) . $filename);
+					$this->updatePreviewSize($filename, $width, $height);
+				}
+			}
 		}
 	}
 	

@@ -152,3 +152,38 @@ if (!$ilDB->tableExists('rep_robj_xmg_downloads'))
 	$ilDB->addIndex("rep_robj_xmg_downloads", array("xmg_id"), "i1");
 }
 ?>
+<#8>
+<?php
+if(!$ilDB->tableColumnExists('rep_robj_xmg_object', 'download'))
+{
+	$ilDB->addTableColumn("rep_robj_xmg_object",	"download",
+		array(
+			'type' => 'integer',
+			'length'  => 2,
+			'notnull' => true,
+			'default' => 0)
+	);
+}
+
+?>
+<#9>
+<?php
+if(!$ilDB->tableColumnExists('rep_robj_xmg_filedata', 'pwidth'))
+{
+	$ilDB->addTableColumn("rep_robj_xmg_filedata",	"pwidth",
+		array(
+			'type' => 'integer',
+			'length'  => 4,
+			'notnull' => true,
+			'default' => 0)
+	);
+	$ilDB->addTableColumn("rep_robj_xmg_filedata",	"pheight",
+		array(
+			'type' => 'integer',
+			'length'  => 4,
+			'notnull' => true,
+			'default' => 0)
+	);
+}
+
+?>

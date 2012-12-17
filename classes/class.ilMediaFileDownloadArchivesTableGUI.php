@@ -69,7 +69,8 @@ class ilMediaFileDownloadArchivesTableGUI extends ilTable2GUI
 		$this->setDefaultOrderField("filename");
 		$this->setDefaultOrderDirection("asc");
 		
-		$this->addCommandButton('deleteArchive', $this->lng->txt('delete'));
+		$this->addMultiCommand('deleteArchive', $this->lng->txt('delete'));
+		$this->addMultiCommand('changeArchiveFilename', $this->lng->txt('rename'));
 		$this->addCommandButton('saveAllArchiveData', $this->plugin->txt('save_all'));
 		$this->setFormAction($this->ctrl->getFormAction($a_parent_obj, $a_parent_cmd));
 		$this->setSelectAllCheckbox('file');

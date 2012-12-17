@@ -15,6 +15,7 @@ xmg_write#:#Edit Media Gallery
 xmg_delete#:#Delete Media Gallery
 xmg_visible#:#Media Gallery is visible
 xmg_edit_permission#:#Change permission settings
+saveArchiveFilename#:#Set filename of download archive
 mediafiles#:#Media files
 mediagallery_plugin_configuration#:#MediaGallery Plugin Configuration
 ext_img#:#Valid image extensions
@@ -35,6 +36,8 @@ save_all#:#Save All
 filename#:#Filename
 show_title#:#Show title
 show_title_description#:#Show the title of a media object in the thumbnail view.
+show_download#:#Download media files
+show_download_description#:#Adds a download link for each media file.
 sort#:#Sort order
 id#:#ID
 size#:#Size
@@ -106,3 +109,10 @@ Bild#:#Picture
 Bilder#:#Pictures
 rotate_left#:#Rotate 90 degrees left
 rotate_right#:#Rotate 90 degrees right
+add_to_archive#:#Add to Archive
+please_select_file_to_create_archive#:#Please check at least one media file to add it to a download archive.
+please_select_unique_archive_name#:#The download archive already exists.
+please_select_file_to_add_preview#:#Please check at least one media file to add a preview image.
+please_select_archive_to_rename#:#Please check exactly one download archive to rename it.
+add_preview#:#Add preview image
+upload#:#Upload

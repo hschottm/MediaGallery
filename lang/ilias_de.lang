@@ -16,6 +16,7 @@ xmg_delete#:#Mediengalerie löschen
 xmg_visible#:#Mediengalerie ist sichtbar
 xmg_edit_permission#:#Ändere Rechte
 mediagallery_plugin_configuration#:#MediaGallery Plugin Konfiguration
+saveArchiveFilename#:#Dateiname des Download-Archivs setzen
 ext_img#:#Erlaubte Bild-Erweiterungen
 ext_vid#:#Erlaubte Video-Erweiterungen
 ext_aud#:#Erlaubte Audio-Erweiterungen
@@ -39,6 +40,8 @@ created#:#Erstellt
 download_archive#:#Als Download anbieten
 show_title#:#Titel anzeigen
 show_title_description#:#Zeigt den Titel eines Medienobjektes in der Vorschau der Mediengalerie an.
+show_download#:#Downloadbare Medien
+show_download_description#:#Bietet für alle Medien einen separaten Download-Link an.
 sort#:#Sortierung
 id#:#ID
 all_media_types#:#Alle Mediendateien
@@ -102,3 +105,10 @@ Bild#:#Bild
 Bilder#:#Bilder
 rotate_left#:#Um 90 Grad nach links drehen
 rotate_right#:#Um 90 Grad nach rechts drehen
+add_to_archive#:#In Exportdatei speichern
+please_select_file_to_create_archive#:#Bitte wählen Sie mindestens eine Mediendatei zum Hinzufügen zu einem Download-Archiv aus.
+please_select_unique_archive_name#:#Der Archivname existiert bereits.
+please_select_archive_to_rename#:#Bitte wählen Sie genau ein Download-Archiv zum umbenennen aus.
+please_select_file_to_add_preview#:#Bitte wählen Sie mindestens eine Datei aus, zu der eine Vorschau hochgeladen werden soll.
+add_preview#:#Vorschaubild hochladen
+upload#:#Hochladen
