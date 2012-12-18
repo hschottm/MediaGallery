@@ -356,7 +356,12 @@ class ilObjMediaGallery extends ilObjectPlugin
 		@unlink($this->getPath(LOCATION_SIZE_SMALL) . $filename);
 		@unlink($this->getPath(LOCATION_SIZE_MEDIUM) . $filename);
 		@unlink($this->getPath(LOCATION_SIZE_LARGE) . $filename);
-		@unlink($this->getPath(LOCATION_SIZE_PREVIEWS) . $filename);
+		
+		$data = $this->getMediaFileData($filename);
+		if (strlen($data['pfilename']))
+		{
+			@unlink($this->getPath(LOCATION_PREVIEWS) . $data['pfilename']);
+		}
 		
 		$affectedRows = $ilDB->manipulateF("DELETE FROM rep_robj_xmg_filedata WHERE xmg_id = %s AND filename = %s",
 			array('integer','text'),
@@ -624,6 +629,24 @@ class ilObjMediaGallery extends ilObjectPlugin
 		{
 			return $data;
 		}
+	}
+
+	public function getMediaFileData($filename)
+	{
+		global $ilDB;
+		
+		$result = $ilDB->queryF("SELECT * FROM rep_robj_xmg_filedata WHERE xmg_id = %s AND filename = %s",
+			array('integer','text'),
+			array($this->getId(), $filename)
+		);
+		if ($result->numRows() > 0)
+		{
+			while ($row = $ilDB->fetchAssoc($result))
+			{
+				return $row;
+			}
+		}
+		return array();
 	}
 
 	public function getMediaObjectCount()
