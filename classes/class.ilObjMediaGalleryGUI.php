@@ -397,31 +397,12 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 				{
 					$iwidth = $fdata['pwidth'];
 					$iheight = $fdata['pheight'];
-					$f = ($iwidth*1.0) / ($iheight*1.0);
-					if ($f < 1)
-					{
-						$iheight = 150;
-						$iwidth = round((150*1.0)*$f);
-					}
-					else
-					{
-						$iwidth = 150;
-						$iheight = round((150*1.0)/$f);
-					}
 				}
 				if ($iwidth > 0 && $iheight > 0)
 				{
-					$aspect = (1.0*$iwidth)/($iheight*1.0);
-					if ($aspect < 1)
-					{
-						$height = 150;
-						$width = round(150.0*$aspect);
-					}
-					else
-					{
-						$width = 150;
-						$height = round(150.0/$aspect);
-					}
+					$scale = $this->object->scaleDimensions($iwidth, $iheight, 150);
+					$width = $scale['width'];
+					$height = $scale['height'];
 					$tpl_element->setCurrentBlock('size');
 					$tpl_element->setVariable('WIDTH', $width+2);
 					$tpl_element->setVariable('HEIGHT', $height+2);
@@ -455,11 +436,11 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 					}
 					$tpl_element->parseCurrentBlock();
 				}
-				$tpl_element->setVariable('URL_FULLSCREEN', $this->object->getPathWeb(LOCATION_SIZE_LARGE) . $fn);
+				$tpl_element->setVariable('URL_FULLSCREEN', $this->object->getPathWeb(LOCATION_SIZE_LARGE) . $fn . "?t=" . time());
 				$tpl_element->setVariable('CAPTION', ilUtil::prepareFormOutput($fdata['description']));
 				if ($fdata['pwidth'] > 0)
 				{
-					$tpl_element->setVariable('URL_THUMBNAIL', $this->object->getPathWeb(LOCATION_PREVIEWS) . $fn . "?t=" . time());
+					$tpl_element->setVariable('URL_THUMBNAIL', $this->object->getPathWeb(LOCATION_PREVIEWS) . $fdata['pfilename'] . "?t=" . time());
 				}
 				else
 				{
@@ -470,35 +451,18 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 			else if ($this->object->isAudio($fn))
 			{
 				$tpl_element = $this->plugin->getTemplate("tpl.gallery.aud.html");
-				$iwidth = $fdata['pwidth'];
-				$iheight = $fdata['pheight'];
+				$iwidth = $fdata['width'];
+				$iheight = $fdata['height'];
 				if ($fdata['pwidth'] > 0) 
 				{
-					$f = ($iwidth*1.0) / ($iheight*1.0);
-					if ($f < 1)
-					{
-						$iheight = 150;
-						$iwidth = round((150*1.0)*$f);
-					}
-					else
-					{
-						$iwidth = 150;
-						$iheight = round((150*1.0)/$f);
-					}
+					$iwidth = $fdata['pwidth'];
+					$iheight = $fdata['pheight'];
 				}
 				if ($iwidth > 0 && $iheight > 0)
 				{
-					$aspect = (1.0*$iwidth)/($iheight*1.0);
-					if ($aspect < 1)
-					{
-						$height = 150;
-						$width = round(150.0*$aspect);
-					}
-					else
-					{
-						$width = 150;
-						$height = round(150.0/$aspect);
-					}
+					$scale = $this->object->scaleDimensions($iwidth, $iheight, 150);
+					$width = $scale['width'];
+					$height = $scale['height'];
 					$tpl_element->setCurrentBlock('size');
 					$tpl_element->setVariable('WIDTH', $width+2);
 					$tpl_element->setVariable('HEIGHT', $height+2);
@@ -537,7 +501,7 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 				$tpl_element->setVariable('CAPTION', ilUtil::prepareFormOutput($fdata['description']));
 				if ($fdata['pwidth'] > 0)
 				{
-					$tpl_element->setVariable('URL_THUMBNAIL', $this->object->getPathWeb(LOCATION_PREVIEWS) . $fn . "?t=" . time());
+					$tpl_element->setVariable('URL_THUMBNAIL', $this->object->getPathWeb(LOCATION_PREVIEWS) . $fdata['pfilename'] . "?t=" . time());
 				}
 				else
 				{
@@ -557,31 +521,14 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 						$iheight = $fdata['pheight'];
 						if ($fdata['pwidth'] > 0) 
 						{
-							$f = ($iwidth*1.0) / ($iheight*1.0);
-							if ($f < 1)
-							{
-								$iheight = 150;
-								$iwidth = round((150*1.0)*$f);
-							}
-							else
-							{
-								$iwidth = 150;
-								$iheight = round((150*1.0)/$f);
-							}
+							$iwidth = $fdata['pwidth'];
+							$iheight = $fdata['pheight'];
 						}
 						if ($iwidth > 0 && $iheight > 0)
 						{
-							$aspect = (1.0*$iwidth)/($iheight*1.0);
-							if ($aspect < 1)
-							{
-								$height = 150;
-								$width = round(150.0*$aspect);
-							}
-							else
-							{
-								$width = 150;
-								$height = round(150.0/$aspect);
-							}
+							$scale = $this->object->scaleDimensions($iwidth, $iheight, 150);
+							$width = $scale['width'];
+							$height = $scale['height'];
 							$tpl_element->setCurrentBlock('size');
 							$tpl_element->setVariable('WIDTH', $width+2);
 							$tpl_element->setVariable('HEIGHT', $height+2);
@@ -619,7 +566,7 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 						$tpl_element->setVariable('CAPTION', ilUtil::prepareFormOutput($fdata['description']));
 						if ($fdata['pwidth'] > 0)
 						{
-							$tpl_element->setVariable('URL_THUMBNAIL', $this->object->getPathWeb(LOCATION_PREVIEWS) . $fn . "?t=" . time());
+							$tpl_element->setVariable('URL_THUMBNAIL', $this->object->getPathWeb(LOCATION_PREVIEWS) . $fdata['pfilename'] . "?t=" . time());
 						}
 						else
 						{
@@ -633,31 +580,14 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 						$iheight = $fdata['pheight'];
 						if ($fdata['pwidth'] > 0) 
 						{
-							$f = ($iwidth*1.0) / ($iheight*1.0);
-							if ($f < 1)
-							{
-								$iheight = 150;
-								$iwidth = round((150*1.0)*$f);
-							}
-							else
-							{
-								$iwidth = 150;
-								$iheight = round((150*1.0)/$f);
-							}
+							$iwidth = $fdata['pwidth'];
+							$iheight = $fdata['pheight'];
 						}
 						if ($iwidth > 0 && $iheight > 0)
 						{
-							$aspect = (1.0*$iwidth)/($iheight*1.0);
-							if ($aspect < 1)
-							{
-								$height = 150;
-								$width = round(150.0*$aspect);
-							}
-							else
-							{
-								$width = 150;
-								$height = round(150.0/$aspect);
-							}
+							$scale = $this->object->scaleDimensions($iwidth, $iheight, 150);
+							$width = $scale['width'];
+							$height = $scale['height'];
 							$tpl_element->setCurrentBlock('size');
 							$tpl_element->setVariable('WIDTH', $width+2);
 							$tpl_element->setVariable('HEIGHT', $height+2);
@@ -696,7 +626,7 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 						$tpl_element->setVariable('CAPTION', ilUtil::prepareFormOutput($fdata['description']));
 						if ($fdata['pwidth'] > 0)
 						{
-							$tpl_element->setVariable('URL_THUMBNAIL', $this->object->getPathWeb(LOCATION_PREVIEWS) . $fn . "?t=" . time());
+							$tpl_element->setVariable('URL_THUMBNAIL', $this->object->getPathWeb(LOCATION_PREVIEWS) . $fdata['pfilename'] . "?t=" . time());
 						}
 						else
 						{
@@ -708,13 +638,49 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 			}
 			else
 			{
-				$tpl_element = $this->plugin->getTemplate("tpl.gallery.vid.html");
-				$tpl_element->setCurrentBlock('size');
-				$tpl_element->setVariable('WIDTH', "150");
-				$tpl_element->setVariable('HEIGHT', "150");
-				$tpl_element->setVariable('MARGIN_TOP', "4");
-				$tpl_element->setVariable('MARGIN_LEFT', "4");
-				$tpl_element->parseCurrentBlock();
+				$tpl_element = $this->plugin->getTemplate("tpl.gallery.other.html");
+				$iwidth = 0;
+				$iheight = 0;
+				if ($fdata['pwidth'] > 0) 
+				{
+					$scale = $this->object->scaleDimensions($fdata['pwidth'], $fdata['pheight'], 150);
+					$iwidth = $scale['width'];
+					$iheight = $scale['height'];
+				}
+				if ($iwidth > 0 && $iheight > 0)
+				{
+					$tpl_element->setCurrentBlock('size');
+					$tpl_element->setVariable('WIDTH', $iwidth+2);
+					$tpl_element->setVariable('HEIGHT', $iheight+2);
+					$tpl_element->setVariable('MARGIN_TOP', round((158.0-$iheight)/2.0));
+					$tpl_element->setVariable('MARGIN_LEFT', round((158.0-$iwidth)/2.0));
+					$tpl_element->parseCurrentBlock();
+					$tpl_element->setCurrentBlock('imgsize');
+					$tpl_element->setVariable('IMG_WIDTH', $iwidth);
+					$tpl_element->setVariable('IMG_HEIGHT', $iheight);
+					$tpl_element->parseCurrentBlock();
+					$fullwidth = $iwidth;
+					$fullheight = $iheight;
+					if ($fdata['pwidth'] > 500 || $fdata['pheight'] > 500)
+					{
+						$scale = $this->object->scaleDimensions($fullwidth, $fullheight, 500);
+						$fullwidth = $scale['width'];
+						$fullheight = $scale['height'];
+					}
+					$tpl_element->setCurrentBlock('imgsizeinline');
+					$tpl_element->setVariable('IMG_WIDTH', $fullwidth);
+					$tpl_element->setVariable('IMG_HEIGHT', $fullheight);
+					$tpl_element->parseCurrentBlock();
+				}
+				else
+				{
+					$tpl_element->setCurrentBlock('size');
+					$tpl_element->setVariable('WIDTH', "150");
+					$tpl_element->setVariable('HEIGHT', "150");
+					$tpl_element->setVariable('MARGIN_TOP', "4");
+					$tpl_element->setVariable('MARGIN_LEFT', "4");
+					$tpl_element->parseCurrentBlock();
+				}
 				if ($this->object->getShowTitle())
 				{
 					$tpl_element->setCurrentBlock('show_title');
@@ -724,14 +690,22 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 					}
 					else
 					{
-						$tpl_element->setVariable('MEDIA_TITLE', '&nbsp;');
+						$tpl_element->setVariable('MEDIA_TITLE', $fn);
 					}
 					$tpl_element->parseCurrentBlock();
 				}
-				$tpl_element->setVariable('INLINE_SECTION', "aud$counter");
-				$tpl_element->setVariable('URL_VIDEO', $this->object->getPathWeb(LOCATION_ORIGINALS) . $fn);
 				$tpl_element->setVariable('CAPTION', ilUtil::prepareFormOutput($fdata['description']));
-				$tpl_element->setVariable('URL_THUMBNAIL', $this->plugin->getDirectory() . '/templates/images/unknown.png');
+				if ($fdata['pwidth'] > 0)
+				{
+					$tpl_element->setVariable('URL_THUMBNAIL', $this->object->getPathWeb(LOCATION_PREVIEWS) . $fdata['pfilename'] . "?t=" . time());
+				}
+				else
+				{
+					$tpl_element->setVariable('URL_THUMBNAIL', $this->plugin->getDirectory() . '/templates/images/unknown.png');
+				}
+				$tpl_element->setVariable('INLINE_SECTION', "oth$counter");
+				$tpl_element->setVariable('URL_DOWNLOAD', $this->object->getPathWeb(LOCATION_ORIGINALS) . $fdata['entry']);
+				$tpl_element->setVariable('URL_DOWNLOADICON', $this->plugin->getDirectory() . '/templates/images/download.png');
 				$tpl_element->setVariable('ALT_THUMBNAIL', ilUtil::prepareFormOutput($fdata['title']));
 			}
 			$template->setCurrentBlock('media');
@@ -871,7 +845,7 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 		$this->initPreviewUploadForm();
 		if ($this->form->checkInput())
 		{
-			$this->object->uploadPreviewForFiles($_SESSION['previewFiles'], $_FILES['filename']["tmp_name"]);
+			$this->object->uploadPreviewForFiles($_SESSION['previewFiles'], $_FILES['filename']["tmp_name"], $_FILES['filename']['type']);
 			unset($_SESSION['previewFiles']);
 			$ilCtrl->redirect($this, "mediafiles");
 		}
@@ -1169,10 +1143,12 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 		$ext_img = ilObjMediaGallery::_getConfigurationValue('ext_img');
 		$ext_vid = ilObjMediaGallery::_getConfigurationValue('ext_vid');
 		$ext_aud = ilObjMediaGallery::_getConfigurationValue('ext_aud');
+		$ext_oth = ilObjMediaGallery::_getConfigurationValue('ext_oth');
 		$template->setVariable("FILTERS", 'filters: [' .
 			'{title : "' . $this->plugin->txt('image_files') . '", extensions : "' . $ext_img . '"},' .
 			'{title : "' . $this->plugin->txt('video_files') . '", extensions : "' . $ext_vid . '"},' .
-			'{title : "' . $this->plugin->txt('audio_files') . '", extensions : "' . $ext_aud . '"}' .
+			'{title : "' . $this->plugin->txt('audio_files') . '", extensions : "' . $ext_aud . '"},' .
+			'{title : "' . $this->plugin->txt('other_files') . '", extensions : "' . $ext_oth . '"}' .
 			'],');
 		$template->setVariable("UPLOAD_URL", html_entity_decode(ILIAS_HTTP_PATH . "/" . $ilCtrl->getLinkTarget($this, 'uploadFile')));
 		$template->setVariable("MAX_FILE_SIZE_IN_MB", "100");

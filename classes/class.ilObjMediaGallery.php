@@ -288,8 +288,11 @@ class ilObjMediaGallery extends ilObjectPlugin
 				if (ilUtil::deducibleSize(ilMimeTypeUtil::getMimeType("", $file, "")))
 				{
 					$imgsize = getimagesize($file);
-					$width = $imgsize[0];
-					$height = $imgsize[1];
+					if (is_array($imgsize))
+					{
+						$width = $imgsize[0];
+						$height = $imgsize[1];
+					}
 				}
 				$this->createPreviews($filename);
 			}
@@ -317,7 +320,7 @@ class ilObjMediaGallery extends ilObjectPlugin
 		}
 		else
 		{
-			if (!$this->hasExtension($file, ilObjMediaGallery::_getConfigurationValue('ext_aud').','.ilObjMediaGallery::_getConfigurationValue('ext_vid').','.ilObjMediaGallery::_getConfigurationValue('ext_img')))
+			if (!$this->hasExtension($file, ilObjMediaGallery::_getConfigurationValue('ext_aud').','.ilObjMediaGallery::_getConfigurationValue('ext_vid').','.ilObjMediaGallery::_getConfigurationValue('ext_img').','.ilObjMediaGallery::_getConfigurationValue('ext_oth')))
 			{
 				@unlink($file);
 				$saveData = false;
@@ -462,6 +465,25 @@ class ilObjMediaGallery extends ilObjectPlugin
 			}
 		}
 	}
+	
+	public function scaleDimensions($width, $height, $scale)
+	{
+		if ($width == 0 || $height == 0 || $scale == 0) return array("width" => $width, "height" => $height);
+		$iwidth = $width;
+		$iheight = $height;
+		$f = ($iwidth*1.0) / ($iheight*1.0);
+		if ($f < 1) // higher
+		{
+			$iheight = $scale;
+			$iwidth = round(($scale*1.0)*$f);
+		}
+		else
+		{
+			$iwidth = $scale;
+			$iheight = round(($scale*1.0)/$f);
+		}
+		return array("width" => $iwidth, "height" => $iheight);
+	}
 
 	public function updateFileDataAfterRotate($filename, $width, $height)
 	{
@@ -472,12 +494,12 @@ class ilObjMediaGallery extends ilObjectPlugin
 		);
 	}
 
-	public function updatePreviewSize($filename, $width, $height)
+	public function updatePreviewSize($filename, $width, $height, $previewfilename)
 	{
 		global $ilDB;
-		$result = $ilDB->manipulateF("UPDATE rep_robj_xmg_filedata SET pwidth = %s, pheight = %s WHERE filename = %s",
-			array('integer','integer','text'),
-			array($width, $height, $filename)
+		$result = $ilDB->manipulateF("UPDATE rep_robj_xmg_filedata SET pwidth = %s, pheight = %s, pfilename = %s WHERE filename = %s",
+			array('integer','integer','text', 'text'),
+			array($width, $height, $previewfilename, $filename)
 		);
 	}
 
@@ -633,10 +655,19 @@ class ilObjMediaGallery extends ilObjectPlugin
 		}
 	}
 	
-	public function uploadPreviewForFiles($filenames, $tempfile)
+	public function uploadPreviewForFiles($filenames, $tempfile, $filetype)
 	{
 		if (is_array($filenames))
 		{
+			$extension = '';
+			if ($_FILES["filename"]["type"] == "image/png")
+			{
+				$extension = ".png";
+			}
+			else
+			{
+				$extension = ".jpg";
+			}
 			$first = true;
 			$preview_filename = '';
 			$width = 0;
@@ -645,18 +676,18 @@ class ilObjMediaGallery extends ilObjectPlugin
 			{
 				if ($first)
 				{
-					$preview_filename = $this->getPath(LOCATION_PREVIEWS) . $filename;
+					$preview_filename = $this->getPath(LOCATION_PREVIEWS) . $filename . $extension;
 					@move_uploaded_file($tempfile, $preview_filename);
 					$imgsize = getimagesize($preview_filename);
 					$width = $imgsize[0];
 					$height = $imgsize[1];
-					$this->updatePreviewSize($filename, $width, $height);
+					$this->updatePreviewSize($filename, $width, $height, $filename . $extension);
 					$first = false;
 				}
 				else
 				{
-					@copy($preview_filename, $this->getPath(LOCATION_PREVIEWS) . $filename);
-					$this->updatePreviewSize($filename, $width, $height);
+					@copy($preview_filename, $this->getPath(LOCATION_PREVIEWS) . $filename . $extension);
+					$this->updatePreviewSize($filename, $width, $height, $filename . $extension);
 				}
 			}
 		}

@@ -76,6 +76,11 @@ class ilMediaGalleryConfigGUI extends ilPluginConfigGUI
 		$ext_aud->setRequired(TRUE);
 		$form->addItem($ext_aud);
 		
+		$ext_oth = new ilTextInputGUI($pl->txt("ext_oth"), "ext_oth");
+		$ext_oth->setValue(ilObjMediaGallery::_getConfigurationValue('ext_oth'));
+		$ext_oth->setRequired(TRUE);
+		$form->addItem($ext_oth);
+		
 		return $form;
 	}
 	
@@ -96,6 +101,7 @@ class ilMediaGalleryConfigGUI extends ilPluginConfigGUI
 			ilObjMediaGallery::_setConfiguration('ext_img', $_POST['ext_img']);
 			ilObjMediaGallery::_setConfiguration('ext_vid', $_POST['ext_vid']);
 			ilObjMediaGallery::_setConfiguration('ext_aud', $_POST['ext_aud']);
+			ilObjMediaGallery::_setConfiguration('ext_oth', $_POST['ext_oth']);
 			ilUtil::sendSuccess($pl->txt("configuration_saved"), true);
 			$ilCtrl->redirect($this, "configure");
 		}

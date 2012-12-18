@@ -21,9 +21,11 @@ mediagallery_plugin_configuration#:#MediaGallery Plugin Configuration
 ext_img#:#Valid image extensions
 ext_vid#:#Valid video extensions
 ext_aud#:#Valid audio extensions
+ext_oth#:#Valid other extensions
 image_files#:#Image files
 video_files#:#Video files
 audio_files#:#Audio files
+other_files#:#Other files
 configuration_saved#:#Configuration saved.
 audio#:#Audio
 video#:#Video

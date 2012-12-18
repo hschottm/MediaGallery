@@ -187,3 +187,17 @@ if(!$ilDB->tableColumnExists('rep_robj_xmg_filedata', 'pwidth'))
 }
 
 ?>
+<#10>
+<?php
+if(!$ilDB->tableColumnExists('rep_robj_xmg_filedata', 'pfilename'))
+{
+	$ilDB->addTableColumn("rep_robj_xmg_filedata",	"pfilename",
+		array(
+			'type' => 'text',
+			'notnull' => false,
+			'length' => 255,
+			'fixed' => false)
+	);
+}
+
+?>

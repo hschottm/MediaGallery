@@ -20,9 +20,11 @@ saveArchiveFilename#:#Dateiname des Download-Archivs setzen
 ext_img#:#Erlaubte Bild-Erweiterungen
 ext_vid#:#Erlaubte Video-Erweiterungen
 ext_aud#:#Erlaubte Audio-Erweiterungen
+ext_oth#:#Erlaubte andere Erweiterungen
 image_files#:#Bilddateien
 video_files#:#Videodateien
 audio_files#:#Audiodateien
+other_files#:#Andere Dateien
 configuration_saved#:#Die Konfiguration wurde erfolgreich gespeichert.
 audio#:#Audio
 video#:#Video

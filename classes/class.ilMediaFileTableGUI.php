@@ -139,9 +139,9 @@ class ilMediaFileTableGUI extends ilTable2GUI
 		$this->tpl->setVariable('CB_ID', $this->counter++);
 		$this->tpl->setVariable("CB_FILE", ilUtil::prepareFormOutput($data['entry']));
 		$this->tpl->setVariable("FILENAME", ilUtil::prepareFormOutput($data['entry']));
-		if (@file_exists($this->parent_obj->object->getPath(LOCATION_PREVIEWS) . $data['entry']))
+		if ($data['pwidth'] > 0)
 		{
-			$this->tpl->setVariable("PREVIEW", $this->parent_obj->object->getPathWeb(LOCATION_PREVIEWS) . $data['entry']);
+			$this->tpl->setVariable("PREVIEW", $this->parent_obj->object->getPathWeb(LOCATION_PREVIEWS) . $data['pfilename']);
 		}
 		else if ($this->parent_obj->object->isImage($data['entry']))
 		{
@@ -181,8 +181,16 @@ class ilMediaFileTableGUI extends ilTable2GUI
 		$this->tpl->setVariable("ELEMENT_ID", $this->getTextFieldValue($data['media_id']));
 		$this->tpl->setVariable("TOPIC", $this->getTextFieldValue($data['topic']));
 		$this->tpl->setVariable("TITLE", $this->getTextFieldValue($data['title']));
-		$this->tpl->setVariable("WIDTH", $this->getTextFieldValue($data['width']));
-		$this->tpl->setVariable("HEIGHT", $this->getTextFieldValue($data['height']));
+		if ($data['pwidth'] > 0)
+		{
+			$this->tpl->setVariable("WIDTH", $this->getTextFieldValue($data['pwidth']));
+			$this->tpl->setVariable("HEIGHT", $this->getTextFieldValue($data['pheight']));
+		}
+		else
+		{
+			$this->tpl->setVariable("WIDTH", $this->getTextFieldValue($data['width']));
+			$this->tpl->setVariable("HEIGHT", $this->getTextFieldValue($data['height']));
+		}
 		$this->tpl->setVariable("DESCRIPTION", $this->getTextFieldValue($data['description']));
 	}
 	
