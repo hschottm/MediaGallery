@@ -67,6 +67,8 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 			case "filterMedia":
 			case "addPreview":
 			case "uploadPreview":
+			case "downloadOriginal":
+			case "downloadOther":
 			case "resetFilterMedia":
 			case "createMissingPreviews":
 			case "archives":
@@ -647,7 +649,8 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 					$tpl_element->setVariable('URL_THUMBNAIL', $this->plugin->getDirectory() . '/templates/images/unknown.png');
 				}
 				$tpl_element->setVariable('INLINE_SECTION', "oth$counter");
-				$tpl_element->setVariable('URL_DOWNLOAD', $this->object->getPathWeb(LOCATION_ORIGINALS) . $fdata['entry']);
+				$this->ctrl->setParameter($this, 'file', $fdata['entry']);
+				$tpl_element->setVariable('URL_DOWNLOAD', $this->ctrl->getLinkTarget($this, "downloadOther"));
 				$tpl_element->setVariable('URL_DOWNLOADICON', $this->plugin->getDirectory() . '/templates/images/download.png');
 				$tpl_element->setVariable('ALT_THUMBNAIL', ilUtil::prepareFormOutput($fdata['title']));
 			}
@@ -664,7 +667,8 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 				{
 					$tpl_title->setVariable('MEDIA_TITLE', ilUtil::prepareFormOutput($fdata['entry']));
 				}
-				$tpl_title->setVariable('URL_DOWNLOAD', $this->object->getPathWeb(LOCATION_ORIGINALS) . $fdata['entry']);
+				$this->ctrl->setParameter($this, 'file', $fdata['entry']);
+				$tpl_title->setVariable('URL_DOWNLOAD', $this->ctrl->getLinkTarget($this, "downloadOriginal"));
 				$elementtitle = $tpl_title->get();
 			}
 			else if ($this->object->getShowTitle())
@@ -708,6 +712,23 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 
 		$template->setVariable("THEME", $this->object->getTheme());
 		$this->tpl->setVariable("ADM_CONTENT", $template->get());
+	}
+	
+	function downloadOriginal()
+	{
+		if ($this->object->getDownload())
+		{
+			ilUtil::deliverFile($this->object->getPath(LOCATION_ORIGINALS) . $_GET['file'], $_GET['file']);
+		}
+		else
+		{
+			$this->ctrl->redirect($this, "gallery");
+		}
+	}
+
+	function downloadOther()
+	{
+		ilUtil::deliverFile($this->object->getPath(LOCATION_ORIGINALS) . $_GET['file'], $_GET['file']);
 	}
 	
 	function filterMedia()
