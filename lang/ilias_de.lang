@@ -119,3 +119,11 @@ add_preview#:#Vorschaubild hochladen
 delete_preview#:#Vorschaubild entfernen
 upload#:#Hochladen
 previews_deleted#:#Die Vorschaubild(er) wurden gelöscht
+expand_image_title#:#Bild auf Vollbild vergrößern
+expand_image#:#Vollbild
+previous#:#Zurück
+next#:#Vorwärts
+close#:#Schließen
+play#:#Slideshow starten
+pause#:#Slideshow pausieren
+playpause#:#Slideshow starten/pausieren

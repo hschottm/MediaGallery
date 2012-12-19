@@ -23,10 +23,61 @@
 			autoplay: true, /* Automatically start videos: True/False */
 			modal: false, /* If set to true, only the close button will close the window */
 			deeplinking: true, /* Allow prettyPhoto to update the url to enable deeplinking. */
-			overlay_gallery: true, /* If set to true, a gallery will overlay the fullscreen image on mouse over */
+			overlay_gallery: false, /* If set to true, a gallery will overlay the fullscreen image on mouse over */
 			keyboard_shortcuts: true, /* Set to false if you open forms inside prettyPhoto */
 			ie6_fallback: true,
-			social_tools: false
+			social_tools: false,
+			playmarkup:'<a href="#" title="{TXT_START_SLIDESHOW}" class="pp_play">{TXT_START_SLIDESHOW}</a>',
+			markup: '<div class="pp_pic_holder"> \
+						<div class="ppt">&nbsp;</div> \
+						<div class="pp_top"> \
+							<div class="pp_left"></div> \
+							<div class="pp_middle"></div> \
+							<div class="pp_right"></div> \
+						</div> \
+						<div class="pp_content_container"> \
+							<div class="pp_left"> \
+							<div class="pp_right"> \
+								<div class="pp_content"> \
+									<div class="pp_loaderIcon"></div> \
+									<div class="pp_fade"> \
+										<a href="#" class="pp_expand" title="{TXT_EXPAND_IMAGE_TITLE}">{TXT_EXPAND_IMAGE}</a> \
+										<div class="pp_hoverContainer"> \
+											<a class="pp_next" title="{TXT_NEXT}" href="#">next</a> \
+											<a class="pp_previous" title="{TXT_PREVIOUS}" href="#">previous</a> \
+										</div> \
+										<div id="pp_full_res"></div> \
+										<div class="pp_details"> \
+											<div class="pp_nav"> \
+												<a href="#" title="{TXT_PREVIOUS}" class="pp_arrow_previous">{TXT_PREVIOUS}</a> \
+												<p class="currentTextHolder">0/0</p> \
+												<a href="#" title="{TXT_NEXT}" class="pp_arrow_next">{TXT_NEXT}</a> \
+											</div> \
+											<p class="pp_description"></p> \
+											{pp_social} \
+											<a class="pp_close" title="{TXT_CLOSE}" href="#">{TXT_CLOSE}</a> \
+										</div> \
+									</div> \
+								</div> \
+							</div> \
+							</div> \
+						</div> \
+						<div class="pp_bottom"> \
+							<div class="pp_left"></div> \
+							<div class="pp_middle"></div> \
+							<div class="pp_right"></div> \
+						</div> \
+					</div> \
+					<div class="pp_overlay"></div>',
+			gallery_markup: '<div class="pp_gallery"> \
+								<a href="#" title="{TXT_PREVIOUS}" class="pp_arrow_previous">{TXT_PREVIOUS}</a> \
+								<div> \
+									<ul> \
+										{gallery} \
+									</ul> \
+								</div> \
+								<a href="#" title="{TXT_NEXT}" class="pp_arrow_next">{TXT_NEXT}</a> \
+							</div>',
 		});
 	});
 </script>

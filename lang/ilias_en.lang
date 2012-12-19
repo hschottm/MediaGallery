@@ -123,3 +123,11 @@ add_preview#:#Add preview image
 delete_preview#:#Delete preview image
 upload#:#Upload
 previews_deleted#:#Preview(s) deleted
+expand_image_title#:#Expand the image
+expand_image#:#Expand
+previous#:#Previous
+next#:#Next
+close#:#Close
+play#:#Play
+pause#:#Pause
+playpause#:#Play/Pause

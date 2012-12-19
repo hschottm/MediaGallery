@@ -686,6 +686,12 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 				$elementtitle = $tpl_title->get();
 			}
 
+			$template->setVariable("TXT_EXPAND_IMAGE_TITLE", $this->plugin->txt("expand_image_title"));
+			$template->setVariable("TXT_EXPAND_IMAGE", $this->plugin->txt("expand_image"));
+			$template->setVariable("TXT_NEXT", $this->plugin->txt("next"));
+			$template->setVariable("TXT_PREVIOUS", $this->plugin->txt("previous"));
+			$template->setVariable("TXT_CLOSE", $this->plugin->txt("close"));
+			$template->setVariable("TXT_START_SLIDESHOW", $this->plugin->txt("playpause"));
 			$template->setCurrentBlock('media');
 			$template->setVariable('GALLERY_ELEMENT', $tpl_element->get() . $elementtitle);
 			$template->parseCurrentBlock();
