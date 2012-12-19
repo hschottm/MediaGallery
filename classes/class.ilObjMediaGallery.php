@@ -426,6 +426,22 @@ class ilObjMediaGallery extends ilObjectPlugin
 			array($this->getId(), $filename)
 		);
 	}
+	
+	public function deletePreview($files)
+	{
+		if (is_array($files))
+		{
+			foreach ($files as $filename)
+			{
+				$data = $this->getMediaFileData($filename);
+				if (strlen($data['pfilename']))
+				{
+					@unlink($this->getPath(LOCATION_PREVIEWS) . $data['pfilename']);
+					$this->updateFileDataAfterDeletePreview($filename);
+				}
+			}
+		}
+	}
 
 	public function deleteArchive($filename)
 	{
@@ -554,6 +570,15 @@ class ilObjMediaGallery extends ilObjectPlugin
 		$result = $ilDB->manipulateF("UPDATE rep_robj_xmg_filedata SET width = %s, height = %s WHERE filename = %s",
 			array('integer','integer','text'),
 			array($width, $height, $filename)
+		);
+	}
+
+	public function updateFileDataAfterDeletePreview($filename)
+	{
+		global $ilDB;
+		$result = $ilDB->manipulateF("UPDATE rep_robj_xmg_filedata SET pwidth = %s, pheight = %s, pfilename = %s WHERE filename = %s",
+			array('integer','integer','text', 'text'),
+			array(0, 0, null, $filename)
 		);
 	}
 

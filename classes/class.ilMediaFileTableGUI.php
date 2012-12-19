@@ -79,6 +79,7 @@ class ilMediaFileTableGUI extends ilTable2GUI
 		$this->setResetCommand('resetFilterMedia');
 
 		$this->addMultiCommand('addPreview', $this->plugin->txt('add_preview'));
+		$this->addMultiCommand('deletePreview', $this->plugin->txt('delete_preview'));
 		$this->addMultiCommand('createArchiveFromSelection', $this->plugin->txt('add_to_archive'));
 		$this->addMultiCommand('deleteFile', $this->lng->txt('delete'));
 

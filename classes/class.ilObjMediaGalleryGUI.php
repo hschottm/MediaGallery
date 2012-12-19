@@ -66,6 +66,7 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 			case "updateProperties":
 			case "filterMedia":
 			case "addPreview":
+			case "deletePreview":
 			case "uploadPreview":
 			case "downloadOriginal":
 			case "downloadOther":
@@ -829,6 +830,25 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 		$ilTabs->activateTab("mediafiles");
 		$this->initPreviewUploadForm();
 		$tpl->setContent($this->form->getHTML());
+	}
+
+	public function deletePreview()
+	{
+		global $tpl, $ilTabs;
+
+		if (!is_array($_POST['file']))
+		{
+			ilUtil::sendInfo($this->plugin->txt('please_select_file_to_delete_preview'), true);
+			$this->ctrl->redirect($this, 'mediafiles');
+		}
+		else
+		{
+			$_SESSION['previewFiles'] = $_POST['file'];
+		}
+		$this->object->deletePreview($_SESSION['previewFiles']);
+		unset($_SESSION['previewFiles']);
+		ilUtil::sendSuccess($this->plugin->txt('previews_deleted'), true);
+		$this->ctrl->redirect($this, 'mediafiles');
 	}
 
 	public function uploadPreview()

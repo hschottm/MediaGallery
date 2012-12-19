@@ -114,5 +114,8 @@ please_select_file_to_create_archive#:#Bitte wählen Sie mindestens eine Mediend
 please_select_unique_archive_name#:#Der Archivname existiert bereits.
 please_select_archive_to_rename#:#Bitte wählen Sie genau ein Download-Archiv zum umbenennen aus.
 please_select_file_to_add_preview#:#Bitte wählen Sie mindestens eine Datei aus, zu der eine Vorschau hochgeladen werden soll.
+please_select_file_to_delete_preview#:#Bitte wählen Sie mindestens eine Datei aus, zu der das Vorschaubild gelöscht werden soll.
 add_preview#:#Vorschaubild hochladen
+delete_preview#:#Vorschaubild entfernen
 upload#:#Hochladen
+previews_deleted#:#Die Vorschaubild(er) wurden gelöscht

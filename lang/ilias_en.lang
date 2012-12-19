@@ -117,6 +117,9 @@ add_to_archive#:#Add to Archive
 please_select_file_to_create_archive#:#Please check at least one media file to add it to a download archive.
 please_select_unique_archive_name#:#The download archive already exists.
 please_select_file_to_add_preview#:#Please check at least one media file to add a preview image.
+please_select_file_to_delete_preview#:#Please check at least one media file to delete a preview image.
 please_select_archive_to_rename#:#Please check exactly one download archive to rename it.
 add_preview#:#Add preview image
+delete_preview#:#Delete preview image
 upload#:#Upload
+previews_deleted#:#Preview(s) deleted
