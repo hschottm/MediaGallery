@@ -22,6 +22,7 @@ ext_img#:#Valid image extensions
 ext_vid#:#Valid video extensions
 ext_aud#:#Valid audio extensions
 ext_oth#:#Valid other extensions
+preview#:#Preview image
 image_files#:#Image files
 video_files#:#Video files
 audio_files#:#Audio files

@@ -25,6 +25,7 @@ image_files#:#Bilddateien
 video_files#:#Videodateien
 audio_files#:#Audiodateien
 other_files#:#Andere Dateien
+preview#:#Vorschaubild
 configuration_saved#:#Die Konfiguration wurde erfolgreich gespeichert.
 audio#:#Audio
 video#:#Video
