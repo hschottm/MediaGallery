@@ -423,19 +423,6 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 					$tpl_element->setVariable('MARGIN_LEFT', "4");
 					$tpl_element->parseCurrentBlock();
 				}
-				if ($this->object->getShowTitle())
-				{
-					$tpl_element->setCurrentBlock('show_title');
-					if (strlen($fdata['title']))
-					{
-						$tpl_element->setVariable('MEDIA_TITLE', ilUtil::prepareFormOutput($fdata['title']));
-					}
-					else
-					{
-						$tpl_element->setVariable('MEDIA_TITLE', $fn);
-					}
-					$tpl_element->parseCurrentBlock();
-				}
 				$tpl_element->setVariable('URL_FULLSCREEN', $this->object->getPathWeb(LOCATION_SIZE_LARGE) . $fn . "?t=" . time());
 				$tpl_element->setVariable('CAPTION', ilUtil::prepareFormOutput($fdata['description']));
 				if ($fdata['pwidth'] > 0)
@@ -481,19 +468,6 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 					$tpl_element->setVariable('HEIGHT', "150");
 					$tpl_element->setVariable('MARGIN_TOP', "4");
 					$tpl_element->setVariable('MARGIN_LEFT', "4");
-					$tpl_element->parseCurrentBlock();
-				}
-				if ($this->object->getShowTitle())
-				{
-					$tpl_element->setCurrentBlock('show_title');
-					if (strlen($fdata['title']))
-					{
-						$tpl_element->setVariable('MEDIA_TITLE', ilUtil::prepareFormOutput($fdata['title']));
-					}
-					else
-					{
-						$tpl_element->setVariable('MEDIA_TITLE', '&nbsp;');
-					}
 					$tpl_element->parseCurrentBlock();
 				}
 				$tpl_element->setVariable('INLINE_SECTION', "aud$counter");
@@ -549,19 +523,6 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 							$tpl_element->setVariable('MARGIN_LEFT', "4");
 							$tpl_element->parseCurrentBlock();
 						}
-						if ($this->object->getShowTitle())
-						{
-							$tpl_element->setCurrentBlock('show_title');
-							if (strlen($fdata['title']))
-							{
-								$tpl_element->setVariable('MEDIA_TITLE', ilUtil::prepareFormOutput($fdata['title']));
-							}
-							else
-							{
-								$tpl_element->setVariable('MEDIA_TITLE', '&nbsp;');
-							}
-							$tpl_element->parseCurrentBlock();
-						}
 						$tpl_element->setVariable('URL_VIDEO', $this->object->getPathWeb(LOCATION_ORIGINALS) . $fn);
 						$tpl_element->setVariable('CAPTION', ilUtil::prepareFormOutput($fdata['description']));
 						if ($fdata['pwidth'] > 0)
@@ -606,19 +567,6 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 							$tpl_element->setVariable('HEIGHT', "150");
 							$tpl_element->setVariable('MARGIN_TOP', "4");
 							$tpl_element->setVariable('MARGIN_LEFT', "4");
-							$tpl_element->parseCurrentBlock();
-						}
-						if ($this->object->getShowTitle())
-						{
-							$tpl_element->setCurrentBlock('show_title');
-							if (strlen($fdata['title']))
-							{
-								$tpl_element->setVariable('MEDIA_TITLE', ilUtil::prepareFormOutput($fdata['title']));
-							}
-							else
-							{
-								$tpl_element->setVariable('MEDIA_TITLE', '&nbsp;');
-							}
 							$tpl_element->parseCurrentBlock();
 						}
 						$tpl_element->setVariable('INLINE_SECTION', "aud$counter");
@@ -681,19 +629,6 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 					$tpl_element->setVariable('MARGIN_LEFT', "4");
 					$tpl_element->parseCurrentBlock();
 				}
-				if ($this->object->getShowTitle())
-				{
-					$tpl_element->setCurrentBlock('show_title');
-					if (strlen($fdata['title']))
-					{
-						$tpl_element->setVariable('MEDIA_TITLE', ilUtil::prepareFormOutput($fdata['title']));
-					}
-					else
-					{
-						$tpl_element->setVariable('MEDIA_TITLE', $fn);
-					}
-					$tpl_element->parseCurrentBlock();
-				}
 				$tpl_element->setVariable('CAPTION', ilUtil::prepareFormOutput($fdata['description']));
 				if ($fdata['pwidth'] > 0)
 				{
@@ -708,8 +643,38 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 				$tpl_element->setVariable('URL_DOWNLOADICON', $this->plugin->getDirectory() . '/templates/images/download.png');
 				$tpl_element->setVariable('ALT_THUMBNAIL', ilUtil::prepareFormOutput($fdata['title']));
 			}
+
+			$elementtitle = '';
+			if ($this->object->getDownload())
+			{
+				$tpl_title = $this->plugin->getTemplate("tpl.gallery.download.html");
+				if ($this->object->getShowTitle() && strlen($fdata['title']))
+				{
+					$tpl_title->setVariable('MEDIA_TITLE', ilUtil::prepareFormOutput($fdata['title']));
+				}
+				else
+				{
+					$tpl_title->setVariable('MEDIA_TITLE', ilUtil::prepareFormOutput($fdata['entry']));
+				}
+				$tpl_title->setVariable('URL_DOWNLOAD', $this->object->getPathWeb(LOCATION_ORIGINALS) . $fdata['entry']);
+				$elementtitle = $tpl_title->get();
+			}
+			else if ($this->object->getShowTitle())
+			{
+				$tpl_title = $this->plugin->getTemplate("tpl.gallery.title.html");
+				if (strlen($fdata['title']))
+				{
+					$tpl_title->setVariable('MEDIA_TITLE', ilUtil::prepareFormOutput($fdata['title']));
+				}
+				else
+				{
+					$tpl_title->setVariable('MEDIA_TITLE', '&nbsp;');
+				}
+				$elementtitle = $tpl_title->get();
+			}
+
 			$template->setCurrentBlock('media');
-			$template->setVariable('GALLERY_ELEMENT', $tpl_element->get());
+			$template->setVariable('GALLERY_ELEMENT', $tpl_element->get() . $elementtitle);
 			$template->parseCurrentBlock();
 		}
 
