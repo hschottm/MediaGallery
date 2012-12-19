@@ -28,6 +28,7 @@ class ilObjMediaGallery extends ilObjectPlugin
 	protected $sortorder = 'entry';
 	protected $showTitle = 0;
 	protected $download = 0;
+	protected $theme = '';
 	
 	/**
 	* Constructor
@@ -84,12 +85,14 @@ class ilObjMediaGallery extends ilObjectPlugin
 			$row = $ilDB->fetchAssoc($result);
 			$this->setShowTitle($row['show_title']);
 			$this->setDownload($row['download']);
+			$this->setTheme($row['theme']);
 			$this->setSortOrder($row['sortorder']);
 		}
 		else
 		{
 			$this->setShowTitle(0);
 			$this->setDownload(0);
+			$this->setTheme(ilObjMediaGallery::_getConfigurationValue('theme'));
 			$this->setSortOrder('entry');
 		}
 	}
@@ -106,9 +109,9 @@ class ilObjMediaGallery extends ilObjectPlugin
 			array('integer'),
 			array($this->getId())
 		);
-		$result = $ilDB->manipulateF("INSERT INTO rep_robj_xmg_object (obj_fi, sortorder, show_title, download) VALUES (%s, %s, %s, %s)",
-			array('integer','text','integer', 'integer'),
-			array($this->getId(), $this->getSortOrder(), $this->getShowTitle(), $this->getDownload())
+		$result = $ilDB->manipulateF("INSERT INTO rep_robj_xmg_object (obj_fi, sortorder, show_title, download, theme) VALUES (%s, %s, %s, %s, %s)",
+			array('integer','text','integer', 'integer', 'text'),
+			array($this->getId(), $this->getSortOrder(), $this->getShowTitle(), $this->getDownload(), $this->getTheme())
 		);
 	}
 	
@@ -148,6 +151,18 @@ class ilObjMediaGallery extends ilObjectPlugin
 	{
 		return ($this->download) ? 1 : 0;
 	}
+
+	public function getTheme()
+	{
+		if (strlen($this->theme) == 0)
+		{
+			return ilObjMediaGallery::_getConfigurationValue('theme');
+		}
+		else
+		{
+			return $this->theme;
+		}
+	}
 	
 	public function setSortOrder($sortorder)
 	{
@@ -162,6 +177,11 @@ class ilObjMediaGallery extends ilObjectPlugin
 	public function setDownload($download)
 	{
 		$this->download = $download;
+	}
+
+	public function setTheme($theme)
+	{
+		$this->theme = $theme;
 	}
 
 	private function getDataPath()
@@ -180,7 +200,14 @@ class ilObjMediaGallery extends ilObjectPlugin
 	{
 		include_once './Services/Administration/classes/class.ilSetting.php';
 		$setting = new ilSetting("xmg");
-		return $setting->get($key);
+		if (strcmp($key, 'theme') == 0 && strlen($setting->get($key)) == 0)
+		{
+			return "dark_rounded";
+		}
+		else
+		{
+			return $setting->get($key);
+		}
 	}
 
 	public static function _setConfiguration($key, $value)
@@ -345,6 +372,37 @@ class ilObjMediaGallery extends ilObjectPlugin
 		}
 		ksort($files);
 		return $files;
+	}
+
+	private function getDirsInDir($a_dir)
+	{
+		$current_dir = opendir($a_dir);
+
+		$files = array();
+		while($entry = readdir($current_dir))
+		{
+			if ($entry != "." && $entry != ".." && !@is_file($a_dir."/".$entry) && strpos($entry, ".") !== 0)
+			{
+				array_push($files, $entry);
+			}
+		}
+		ksort($files);
+		return $files;
+	}
+	
+	public function getGalleryThemes()
+	{
+		$data = $this->getDirsInDir($this->plugin->getDirectory() . '/js/prettyphoto_3.1.4/images/prettyPhoto');
+		if (count($data) == 0)
+		{
+			array_push($data, ilObjMediaGallery::_getConfigurationValue('theme'));
+		}
+		$themes = array();
+		foreach ($data as $theme)
+		{
+			$themes[$theme] = $theme;
+		}
+		return $themes;
 	}
 	
 	public function deleteFile($filename)

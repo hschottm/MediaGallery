@@ -264,6 +264,12 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 		$sd->setInfo($this->txt("show_download_description"));
 		$this->form->addItem($sd);
 
+		// theme
+		$theme = new ilSelectInputGUI($this->plugin->txt("gallery_theme"), "theme");
+		$theme_options = $this->object->getGalleryThemes();
+		$theme->setOptions($theme_options);
+		$this->form->addItem($theme);
+
 		$this->form->addCommandButton("updateProperties", $this->txt("save"));
 
 		$this->form->setTitle($this->txt("edit_properties"));
@@ -280,6 +286,7 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 		$values["sort"] = $this->object->getSortOrder();
 		$values["show_download"] = $this->object->getDownload();
 		$values["show_title"] = $this->object->getShowTitle();
+		$values["theme"] = $this->object->getTheme();
 		$this->form->setValuesByArray($values);
 	}
 
@@ -298,6 +305,7 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 			$this->object->setSortOrder($this->form->getInput("sort"));
 			$this->object->setShowTitle($this->form->getInput("show_title"));
 			$this->object->setDownload($this->form->getInput("show_download"));
+			$this->object->setTheme($this->form->getInput("theme"));
 			$this->object->update();
 			ilUtil::sendSuccess($lng->txt("msg_obj_modified"), true);
 			$ilCtrl->redirect($this, "editProperties");
@@ -698,6 +706,7 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 			$ilToolbar->setFormAction($ilCtrl->getFormAction($this));
 		}
 
+		$template->setVariable("THEME", $this->object->getTheme());
 		$this->tpl->setVariable("ADM_CONTENT", $template->get());
 	}
 	

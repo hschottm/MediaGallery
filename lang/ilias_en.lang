@@ -31,6 +31,7 @@ configuration_saved#:#Configuration saved.
 audio#:#Audio
 video#:#Video
 image#:#Image
+gallery_theme#:#Gallery Theme
 gallery#:#Media Gallery
 new_archive#:#Create new download archive
 upload_file_alert#:#You must queue at least one file.

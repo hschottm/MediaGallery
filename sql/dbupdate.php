@@ -201,3 +201,18 @@ if(!$ilDB->tableColumnExists('rep_robj_xmg_filedata', 'pfilename'))
 }
 
 ?>
+<#11>
+<?php
+if(!$ilDB->tableColumnExists('rep_robj_xmg_object', 'theme'))
+{
+	$ilDB->addTableColumn("rep_robj_xmg_object",	"theme",
+		array(
+			'type' => 'text',
+			'notnull' => false,
+			'length' => 255,
+			'fixed' => false,
+			'default' => NULL)
+	);
+}
+
+?>
