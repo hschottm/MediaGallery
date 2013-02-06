@@ -81,3 +81,13 @@ td.xmg_desc input {
 	width: 95%;
 	font-size: 90%;
 }
+
+.xmg_border {
+	border: 1px #666 solid;
+	background-color: #fff;
+	padding: 4px;
+}
+
+.xmg_no_border {
+	
+}

@@ -62,7 +62,6 @@ class ilMediaFileTableGUI extends ilTable2GUI
 		$this->counter = 1;
 		$this->addColumn('','f','1%');
 		$this->addColumn($this->lng->txt("filename"),'entry', '', '', 'xmg_fn');
-		$this->addColumn('','', '', '', 'xmg_preview_icon');
 		$this->addColumn('','', '', '', 'xmg_preview');
 		$this->addColumn('','', '', '', 'xmg_action');
 		$this->addColumn($this->plugin->txt("sort"),'custom', '', '', 'xmg_custom');
@@ -144,8 +143,7 @@ class ilMediaFileTableGUI extends ilTable2GUI
 		if ($data['pwidth'] > 0)
 		{
 			$this->tpl->setVariable("PREVIEW", $this->parent_obj->object->getPathWeb(LOCATION_PREVIEWS) . $data['pfilename']);
-			$this->tpl->setVariable("PREVIEW_ICON", $this->plugin->getDirectory() . '/templates/images/preview.png');
-			$this->tpl->setVariable("PREVIEW_ALT", $this->plugin->txt("preview"));
+			$this->tpl->setVariable("PREVIEW_CLASS_BORDER", 'xmg_border');
 		}
 		else if ($this->parent_obj->object->isImage($data['entry']))
 		{
@@ -159,6 +157,7 @@ class ilMediaFileTableGUI extends ilTable2GUI
 			$this->ctrl->setParameter($this->parent_obj, "action", "rotateRight");
 			$this->tpl->setVariable("URL_ROTATE_RIGHT", $this->ctrl->getLinkTarget($this->parent_obj, 'mediafiles'));
 			$this->tpl->setVariable("TEXT_ROTATE_RIGHT", $this->lng->txt("rotate_right"));
+			$this->tpl->setVariable("PREVIEW_CLASS_BORDER", 'xmg_no_border');
 		}
 		else if ($this->parent_obj->object->isAudio($data['entry']))
 		{
