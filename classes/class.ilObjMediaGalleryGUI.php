@@ -19,6 +19,7 @@ include_once("./Services/Repository/classes/class.ilObjectPluginGUI.php");
 *
 * @ilCtrl_isCalledBy ilObjMediaGalleryGUI: ilRepositoryGUI, ilAdministrationGUI, ilObjPluginDispatchGUI
 * @ilCtrl_Calls ilObjMediaGalleryGUI: ilPermissionGUI, ilInfoScreenGUI, ilObjectCopyGUI
+* @ilCtrl_Calls ilObjMediaGalleryGUI: ilCommonActionDispatcherGUI
 *
 */
 class ilObjMediaGalleryGUI extends ilObjectPluginGUI
