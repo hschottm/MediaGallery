@@ -499,7 +499,6 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 				$file_parts = pathinfo($fn);
 				switch(strtolower($file_parts['extension']))
 				{
-					case "mov":
 					case "swf":
 						$tpl_element = $this->plugin->getTemplate("tpl.gallery.qt.html");
 						$iwidth = $fdata['pwidth'];
@@ -546,6 +545,7 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 						}
 						$tpl_element->setVariable('ALT_THUMBNAIL', ilUtil::prepareFormOutput($fdata['title']));
 						break;
+					case "mov":
 					default:
 						$tpl_element = $this->plugin->getTemplate("tpl.gallery.vid.html");
 						$iwidth = $fdata['pwidth'];
