@@ -583,6 +583,21 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 						}
 						$tpl_element->setVariable('INLINE_SECTION', "aud$counter");
 						$tpl_element->setVariable('URL_VIDEO', $this->object->getPathWeb(LOCATION_ORIGINALS) . $fn);
+						switch (strtolower($file_parts['extension']))
+						{
+							case 'webm':
+								$tpl_element->setVariable('TYPE_VIDEO', "video/webm");
+								break;
+							case 'ogv':
+								$tpl_element->setVariable('TYPE_VIDEO', "video/ogg");
+								break;
+							case 'mov':
+								$tpl_element->setVariable('TYPE_VIDEO', "video/mp4; codecs=avc1.42E01E, mp4a.40.2");
+							case 'mp4':
+							default:
+								$tpl_element->setVariable('TYPE_VIDEO', "video/mp4");
+								break;
+						}
 						$tpl_element->setVariable('CAPTION', ilUtil::prepareFormOutput($fdata['description']));
 						if ($fdata['pwidth'] > 0)
 						{
