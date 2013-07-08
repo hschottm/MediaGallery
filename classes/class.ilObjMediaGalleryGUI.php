@@ -582,6 +582,21 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 						}
 						$tpl_element->setVariable('INLINE_SECTION', "aud$counter");
 						$tpl_element->setVariable('URL_VIDEO', $this->object->getPathWeb(LOCATION_ORIGINALS) . $fn);
+						switch (strtolower($file_parts['extension']))
+						{
+							case 'webm':
+								$tpl_element->setVariable('TYPE_VIDEO', "video/webm");
+								break;
+							case 'ogv':
+								$tpl_element->setVariable('TYPE_VIDEO', "video/ogg");
+								break;
+							case 'mov':
+								$tpl_element->setVariable('TYPE_VIDEO', "video/mp4; codecs=avc1.42E01E, mp4a.40.2");
+							case 'mp4':
+							default:
+								$tpl_element->setVariable('TYPE_VIDEO', "video/mp4");
+								break;
+						}
 						$tpl_element->setVariable('CAPTION', ilUtil::prepareFormOutput($fdata['description']));
 						if ($fdata['pwidth'] > 0)
 						{
@@ -1033,7 +1048,7 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 	
 	protected function normalizeUtf8String( $s)
 	{
-		// maps German (umlauts) and other European characters onto two characters before just removing diacritics
+		// maps German (umlauts) and other European characters onto two characters before just redirecting diacritics
 		$s    = preg_replace( '@\x{00c4}@u'    , "AE",    $s );    // umlaut Ä => AE
 		$s    = preg_replace( '@\x{00d6}@u'    , "OE",    $s );    // umlaut Ö => OE
 		$s    = preg_replace( '@\x{00dc}@u'    , "UE",    $s );    // umlaut Ü => UE
