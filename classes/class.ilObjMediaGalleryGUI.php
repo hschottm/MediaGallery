@@ -648,7 +648,22 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 				}
 				else
 				{
-					$tpl_element->setVariable('URL_THUMBNAIL', $this->plugin->getDirectory() . '/templates/images/unknown.png');
+					include_once("./Services/Utilities/classes/class.ilFileUtils.php");
+					$mime = ilFileUtils::_lookupMimeType($this->object->getPath(LOCATION_ORIGINALS) . $fdata['entry']);
+					$res = explode(";", $mime);
+					if ($res !== false)
+					{
+						$mime = $res[0];
+					}
+					$path = $this->plugin->getDirectory() . "/templates/images/mimetypes/" . str_replace("/", "-", $mime) . ".png";
+					if (file_exists($path))
+					{
+						$tpl_element->setVariable('URL_THUMBNAIL', $path);
+					}
+					else
+					{
+						$tpl_element->setVariable('URL_THUMBNAIL', $this->plugin->getDirectory() . '/templates/images/unknown.png');
+					}
 				}
 				$tpl_element->setVariable('INLINE_SECTION', "oth$counter");
 				$this->ctrl->setParameter($this, 'file', $fdata['entry']);
