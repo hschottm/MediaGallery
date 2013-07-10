@@ -592,6 +592,7 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 								break;
 							case 'mov':
 								$tpl_element->setVariable('TYPE_VIDEO', "video/mp4; codecs=avc1.42E01E, mp4a.40.2");
+								break;
 							case 'mp4':
 							default:
 								$tpl_element->setVariable('TYPE_VIDEO', "video/mp4");
