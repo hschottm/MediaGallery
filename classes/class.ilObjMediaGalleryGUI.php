@@ -613,79 +613,95 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 			}
 			else
 			{
-				$tpl_element = $this->plugin->getTemplate("tpl.gallery.other.html");
-				$iwidth = 0;
-				$iheight = 0;
-				if ($fdata['pwidth'] > 0) 
-				{
-					$scale = $this->object->scaleDimensions($fdata['pwidth'], $fdata['pheight'], 150);
-					$iwidth = $scale['width'];
-					$iheight = $scale['height'];
-				}
-				if ($iwidth > 0 && $iheight > 0)
-				{
-					$tpl_element->setCurrentBlock('size');
-					$tpl_element->setVariable('WIDTH', $iwidth+2);
-					$tpl_element->setVariable('HEIGHT', $iheight+2);
-					$tpl_element->setVariable('MARGIN_TOP', round((158.0-$iheight)/2.0));
-					$tpl_element->setVariable('MARGIN_LEFT', round((158.0-$iwidth)/2.0));
-					$tpl_element->parseCurrentBlock();
-					$tpl_element->setCurrentBlock('imgsize');
-					$tpl_element->setVariable('IMG_WIDTH', $iwidth);
-					$tpl_element->setVariable('IMG_HEIGHT', $iheight);
-					$tpl_element->parseCurrentBlock();
-					$fullwidth = $iwidth;
-					$fullheight = $iheight;
-					if ($fdata['pwidth'] > 500 || $fdata['pheight'] > 500)
+					$file_parts = pathinfo($fn);
+					$tpl_element = $this->plugin->getTemplate("tpl.gallery.other.html");
+					$iwidth = 0;
+					$iheight = 0;
+					if ($fdata['pwidth'] > 0) 
 					{
-						$scale = $this->object->scaleDimensions($fullwidth, $fullheight, 500);
-						$fullwidth = $scale['width'];
-						$fullheight = $scale['height'];
+						$scale = $this->object->scaleDimensions($fdata['pwidth'], $fdata['pheight'], 150);
+						$iwidth = $scale['width'];
+						$iheight = $scale['height'];
 					}
-					$tpl_element->setCurrentBlock('imgsizeinline');
-					$tpl_element->setVariable('IMG_WIDTH', $fullwidth);
-					$tpl_element->setVariable('IMG_HEIGHT', $fullheight);
-					$tpl_element->parseCurrentBlock();
-				}
-				else
-				{
-					$tpl_element->setCurrentBlock('size');
-					$tpl_element->setVariable('WIDTH', "150");
-					$tpl_element->setVariable('HEIGHT', "150");
-					$tpl_element->setVariable('MARGIN_TOP', "4");
-					$tpl_element->setVariable('MARGIN_LEFT', "4");
-					$tpl_element->parseCurrentBlock();
-				}
-				$tpl_element->setVariable('CAPTION', ilUtil::prepareFormOutput($fdata['description']));
-				if ($fdata['pwidth'] > 0)
-				{
-					$tpl_element->setVariable('URL_THUMBNAIL', $this->object->getPathWeb(LOCATION_PREVIEWS) . $fdata['pfilename'] . "?t=" . time());
-				}
-				else
-				{
-					include_once("./Services/Utilities/classes/class.ilFileUtils.php");
-					$mime = ilFileUtils::_lookupMimeType($this->object->getPath(LOCATION_ORIGINALS) . $fdata['entry']);
-					$res = explode(";", $mime);
-					if ($res !== false)
+					if ($iwidth > 0 && $iheight > 0)
 					{
-						$mime = $res[0];
-					}
-					$path = $this->plugin->getDirectory() . "/templates/images/mimetypes/" . str_replace("/", "-", $mime) . ".png";
-					if (file_exists($path))
-					{
-						$tpl_element->setVariable('URL_THUMBNAIL', $path);
+						$tpl_element->setCurrentBlock('size');
+						$tpl_element->setVariable('WIDTH', $iwidth+2);
+						$tpl_element->setVariable('HEIGHT', $iheight+2);
+						$tpl_element->setVariable('MARGIN_TOP', round((158.0-$iheight)/2.0));
+						$tpl_element->setVariable('MARGIN_LEFT', round((158.0-$iwidth)/2.0));
+						$tpl_element->parseCurrentBlock();
+						$tpl_element->setCurrentBlock('imgsize');
+						$tpl_element->setVariable('IMG_WIDTH', $iwidth);
+						$tpl_element->setVariable('IMG_HEIGHT', $iheight);
+						$tpl_element->parseCurrentBlock();
+						$fullwidth = $iwidth;
+						$fullheight = $iheight;
+						if ($fdata['pwidth'] > 500 || $fdata['pheight'] > 500)
+						{
+							$scale = $this->object->scaleDimensions($fullwidth, $fullheight, 500);
+							$fullwidth = $scale['width'];
+							$fullheight = $scale['height'];
+						}
+						$tpl_element->setCurrentBlock('imgsizeinline');
+						$tpl_element->setVariable('IMG_WIDTH', $fullwidth);
+						$tpl_element->setVariable('IMG_HEIGHT', $fullheight);
+						$tpl_element->parseCurrentBlock();
 					}
 					else
 					{
-						$tpl_element->setVariable('URL_THUMBNAIL', $this->plugin->getDirectory() . '/templates/images/unknown.png');
+						$tpl_element->setCurrentBlock('size');
+						$tpl_element->setVariable('WIDTH', "150");
+						$tpl_element->setVariable('HEIGHT', "150");
+						$tpl_element->setVariable('MARGIN_TOP', "4");
+						$tpl_element->setVariable('MARGIN_LEFT', "4");
+						$tpl_element->parseCurrentBlock();
 					}
+					$tpl_element->setVariable('CAPTION', ilUtil::prepareFormOutput($fdata['description']));
+					if ($fdata['pwidth'] > 0)
+					{
+						$tpl_element->setVariable('URL_THUMBNAIL', $this->object->getPathWeb(LOCATION_PREVIEWS) . $fdata['pfilename'] . "?t=" . time());
+					}
+					else
+					{
+						include_once("./Services/Utilities/classes/class.ilFileUtils.php");
+						$mime = ilFileUtils::_lookupMimeType($this->object->getPath(LOCATION_ORIGINALS) . $fdata['entry']);
+						$res = explode(";", $mime);
+						if ($res !== false)
+						{
+							$mime = $res[0];
+						}
+						switch (strtolower($file_parts['extension']))
+						{
+							case 'xls':
+							case 'xlsx':
+								$mime = "application-vnd.ms-excel";
+								break;
+							case 'doc':
+							case 'docx':
+								$mime = "application-msword";
+								break;
+							case 'ppt':
+							case 'pptx':
+								$mime = "application-vnd.ms-powerpoint";
+								break;
+						}
+						$path = $this->plugin->getDirectory() . "/templates/images/mimetypes/" . str_replace("/", "-", $mime) . ".png";
+						if (file_exists($path))
+						{
+							$tpl_element->setVariable('URL_THUMBNAIL', $path);
+						}
+						else
+						{
+							$tpl_element->setVariable('URL_THUMBNAIL', $this->plugin->getDirectory() . '/templates/images/unknown.png');
+						}
+					}
+					$tpl_element->setVariable('INLINE_SECTION', "oth$counter");
+					$this->ctrl->setParameter($this, 'file', $fdata['entry']);
+					$tpl_element->setVariable('URL_DOWNLOAD', $this->ctrl->getLinkTarget($this, "downloadOther"));
+					$tpl_element->setVariable('URL_DOWNLOADICON', $this->plugin->getDirectory() . '/templates/images/download.png');
+					$tpl_element->setVariable('ALT_THUMBNAIL', ilUtil::prepareFormOutput($fdata['title']));
 				}
-				$tpl_element->setVariable('INLINE_SECTION', "oth$counter");
-				$this->ctrl->setParameter($this, 'file', $fdata['entry']);
-				$tpl_element->setVariable('URL_DOWNLOAD', $this->ctrl->getLinkTarget($this, "downloadOther"));
-				$tpl_element->setVariable('URL_DOWNLOADICON', $this->plugin->getDirectory() . '/templates/images/download.png');
-				$tpl_element->setVariable('ALT_THUMBNAIL', ilUtil::prepareFormOutput($fdata['title']));
-			}
 
 			$elementtitle = '';
 			if ($this->object->getDownload())
