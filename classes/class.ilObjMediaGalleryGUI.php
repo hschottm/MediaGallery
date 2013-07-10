@@ -614,6 +614,7 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 			}
 			else
 			{
+				$file_parts = pathinfo($fn);
 				$tpl_element = $this->plugin->getTemplate("tpl.gallery.other.html");
 				$iwidth = 0;
 				$iheight = 0;
@@ -670,6 +671,21 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 					if ($res !== false)
 					{
 						$mime = $res[0];
+					}
+					switch (strtolower($file_parts['extension']))
+					{
+						case 'xls':
+						case 'xlsx':
+							$mime = "application-vnd.ms-excel";
+							break;
+						case 'doc':
+						case 'docx':
+							$mime = "application-msword";
+							break;
+						case 'ppt':
+						case 'pptx':
+							$mime = "application-vnd.ms-powerpoint";
+							break;
 					}
 					$path = $this->plugin->getDirectory() . "/templates/images/mimetypes/" . str_replace("/", "-", $mime) . ".png";
 					if (file_exists($path))
