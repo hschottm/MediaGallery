@@ -284,7 +284,6 @@ class ilObjMediaGallery extends ilObjectPlugin
 	
 	protected function hasExtension($file, $extensions)
 	{
-		global $ilLog;
 		$file_parts = pathinfo($file);
 		$arrExtensions = split(",", $extensions);
 		foreach ($arrExtensions as $ext)
@@ -344,6 +343,15 @@ class ilObjMediaGallery extends ilObjectPlugin
 				@unlink($file);
 				$saveData = false;
 			}
+			// rename mov files to mp4. gives better compatibility in most browsers
+			if ($saveData && $this->hasExtension($file, 'mov'))
+			{
+				$new_filename = preg_replace('/(\.mov)/is', '.mp4', $filename);
+				if (@rename($file, str_replace($filename, $new_filename, $file)))
+				{
+					$filename = $new_filename;
+				}
+			}
 		}
 		else
 		{
@@ -392,7 +400,7 @@ class ilObjMediaGallery extends ilObjectPlugin
 	
 	public function getGalleryThemes()
 	{
-		$data = $this->getDirsInDir($this->plugin->getDirectory() . '/js/prettyphoto_3.1.4/images/prettyPhoto');
+		$data = $this->getDirsInDir($this->plugin->getDirectory() . '/js/prettyphoto_3.1.5/images/prettyPhoto');
 		if (count($data) == 0)
 		{
 			array_push($data, ilObjMediaGallery::_getConfigurationValue('theme'));

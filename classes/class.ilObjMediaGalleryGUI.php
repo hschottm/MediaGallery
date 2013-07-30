@@ -388,9 +388,11 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 	
 		$ilTabs->activateTab("gallery");
 		$this->tpl->addCss($this->plugin->getStyleSheetLocation("xmg.css"));
-		$this->tpl->addCss($this->plugin->getDirectory() . "/js/prettyphoto_3.1.4/css/prettyPhoto.css");
-		$this->tpl->addJavascript($this->plugin->getDirectory() . "/js/prettyphoto_3.1.4/js/jquery.prettyPhoto.js");
-		$this->tpl->addJavascript($this->plugin->getDirectory() . "/js/html5media_1.1.5/html5media.min.js");
+		$this->tpl->addCss($this->plugin->getDirectory() . "/js/prettyphoto_3.1.5/css/prettyPhoto.css");
+		$this->tpl->addJavascript($this->plugin->getDirectory() . "/js/prettyphoto_3.1.5/js/jquery.prettyPhoto.js");
+		$this->tpl->addJavascript($this->plugin->getDirectory() . "/js/html5media-master/domready.js");
+		$this->tpl->addJavascript($this->plugin->getDirectory() . "/js/html5media-master/flowplayer.js");
+		$this->tpl->addJavascript($this->plugin->getDirectory() . "/js/html5media-master/html5media.js");
 		$mediafiles = $this->object->getMediaFiles();
 		$template = $this->plugin->getTemplate("tpl.gallery.html");
 		$counter = 0;
@@ -1256,8 +1258,8 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 		if (!$chunks || $chunk == $chunks - 1) {
 			// Strip the temp .part suffix off 
 			rename("{$filePath}.part", $filePath);
+			$this->object->processNewUpload($filePath);
 		}
-		$this->object->processNewUpload($filePath);
 		// Return JSON-RPC response
 		die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
 	}
