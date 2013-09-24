@@ -830,6 +830,42 @@ class ilObjMediaGallery extends ilObjectPlugin
 			return false;
 		}
 	}
+	
+	public function getMimeIconPath($filename)
+	{
+		include_once("./Services/Utilities/classes/class.ilFileUtils.php");
+		$mime = ilFileUtils::_lookupMimeType($this->getPath(LOCATION_ORIGINALS) . $filename);
+		$res = explode(";", $mime);
+		if ($res !== false)
+		{
+			$mime = $res[0];
+		}
+		$file_parts = pathinfo($this->getPath(LOCATION_ORIGINALS) . $filename);
+		switch (strtolower($file_parts['extension']))
+		{
+			case 'xls':
+			case 'xlsx':
+				$mime = "application-vnd.ms-excel";
+				break;
+			case 'doc':
+			case 'docx':
+				$mime = "application-msword";
+				break;
+			case 'ppt':
+			case 'pptx':
+				$mime = "application-vnd.ms-powerpoint";
+				break;
+		}
+		$path = $this->plugin->getDirectory() . "/templates/images/mimetypes/" . str_replace("/", "-", $mime) . ".png";
+		if (file_exists($path))
+		{
+			return $path;
+		}
+		else
+		{
+			return $this->plugin->getDirectory() . '/templates/images/unknown.png';
+		}
+	}
 
 	public function isAudio($filename)
 	{

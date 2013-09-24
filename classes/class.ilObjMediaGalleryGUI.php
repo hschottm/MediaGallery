@@ -667,37 +667,7 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 				}
 				else
 				{
-					include_once("./Services/Utilities/classes/class.ilFileUtils.php");
-					$mime = ilFileUtils::_lookupMimeType($this->object->getPath(LOCATION_ORIGINALS) . $fdata['entry']);
-					$res = explode(";", $mime);
-					if ($res !== false)
-					{
-						$mime = $res[0];
-					}
-					switch (strtolower($file_parts['extension']))
-					{
-						case 'xls':
-						case 'xlsx':
-							$mime = "application-vnd.ms-excel";
-							break;
-						case 'doc':
-						case 'docx':
-							$mime = "application-msword";
-							break;
-						case 'ppt':
-						case 'pptx':
-							$mime = "application-vnd.ms-powerpoint";
-							break;
-					}
-					$path = $this->plugin->getDirectory() . "/templates/images/mimetypes/" . str_replace("/", "-", $mime) . ".png";
-					if (file_exists($path))
-					{
-						$tpl_element->setVariable('URL_THUMBNAIL', $path);
-					}
-					else
-					{
-						$tpl_element->setVariable('URL_THUMBNAIL', $this->plugin->getDirectory() . '/templates/images/unknown.png');
-					}
+					$tpl_element->setVariable('URL_THUMBNAIL', $this->object->getMimeIconPath($fdata['entry']));
 				}
 				$tpl_element->setVariable('INLINE_SECTION', "oth$counter");
 				$this->ctrl->setParameter($this, 'file', $fdata['entry']);
@@ -812,10 +782,16 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 		if (strcmp($_GET['action'], 'rotateLeft') && strlen($_GET['id']))
 		{
 			$this->object->rotate($_GET['id'], 0);
+			$this->ctrl->setParameter($this, "action", "");
+			$this->ctrl->redirect($this, 'mediafiles');
+			return;
 		}
 		else if (strcmp($_GET['action'], 'rotateRight') && strlen($_GET['id']))
 		{
 			$this->object->rotate($_GET['id'], 1);
+			$this->ctrl->setParameter($this, "action", "");
+			$this->ctrl->redirect($this, 'mediafiles');
+			return;
 		}
 		$this->setSubTabs("mediafiles");
 		$ilTabs->activateTab("mediafiles");

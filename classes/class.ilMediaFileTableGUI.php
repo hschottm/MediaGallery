@@ -152,10 +152,14 @@ class ilMediaFileTableGUI extends ilTable2GUI
 			$this->ctrl->setParameter($this->parent_obj, "id", $data['entry']);
 			$this->ctrl->setParameter($this->parent_obj, "action", "rotateLeft");
 			$this->tpl->setVariable("URL_ROTATE_LEFT", $this->ctrl->getLinkTarget($this->parent_obj, 'mediafiles'));
+			$this->ctrl->setParameter($this->parent_obj, "action", "");
+			$this->ctrl->setParameter($this->parent_obj, "id", "");
 			$this->tpl->setVariable("TEXT_ROTATE_LEFT", $this->lng->txt("rotate_left"));
 			$this->tpl->setVariable("ROTATE_RIGHT", $this->plugin->getDirectory() . '/templates/images/rotate_right.png');
 			$this->ctrl->setParameter($this->parent_obj, "action", "rotateRight");
 			$this->tpl->setVariable("URL_ROTATE_RIGHT", $this->ctrl->getLinkTarget($this->parent_obj, 'mediafiles'));
+			$this->ctrl->setParameter($this->parent_obj, "action", "");
+			$this->ctrl->setParameter($this->parent_obj, "id", "");
 			$this->tpl->setVariable("TEXT_ROTATE_RIGHT", $this->lng->txt("rotate_right"));
 			$this->tpl->setVariable("PREVIEW_CLASS_BORDER", 'xmg_no_border');
 		}
@@ -169,7 +173,7 @@ class ilMediaFileTableGUI extends ilTable2GUI
 		}
 		else
 		{
-			$this->tpl->setVariable("PREVIEW", $this->plugin->getDirectory() . '/templates/images/unknown.png');
+			$this->tpl->setVariable("PREVIEW", $this->parent_obj->object->getMimeIconPath($data['entry']));
 		}
 		$this->tpl->setVariable("TIMESTAMP", time());
 		$this->tpl->setVariable("TEXT_PREVIEW", strlen($data['title']) ? ilUtil::prepareFormOutput($data['title']) : ilUtil::prepareFormOutput($data['entry']));
