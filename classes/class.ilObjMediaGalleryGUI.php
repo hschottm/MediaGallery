@@ -1240,6 +1240,20 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 		die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
 	}
 
+	protected function return_bytes($val) {
+		$val = trim($val);
+		$last = strtolower($val[strlen($val)-1]);
+		switch($last) {
+			case 'g':
+				$val *= 1024;
+			case 'm':
+				$val *= 1024;
+			case 'k':
+				$val *= 1024;
+		}
+		return $val;
+	}
+
 	public function upload()
 	{
 		global $ilTabs, $ilCtrl;
@@ -1260,7 +1274,9 @@ class ilObjMediaGalleryGUI extends ilObjectPluginGUI
 			'{title : "' . $this->plugin->txt('other_files') . '", extensions : "' . $ext_oth . '"}' .
 			'],');
 		$template->setVariable("UPLOAD_URL", html_entity_decode(ILIAS_HTTP_PATH . "/" . $ilCtrl->getLinkTarget($this, 'uploadFile')));
-		$template->setVariable("MAX_FILE_SIZE_IN_MB", "100");
+		$M = $this->return_bytes(ini_get('upload_max_filesize'));
+		$M = $M / (1024 * 1024);
+		$template->setVariable("MAX_FILE_SIZE_IN_MB", $M);
 		$this->tpl->addCss($this->plugin->getDirectory() . "/js/jquery.plupload.queue/css/jquery.plupload.queue.css");
 		$this->tpl->addJavascript($this->plugin->getDirectory() . "/js/plupload.full.js");
 		$this->tpl->addJavascript($this->plugin->getDirectory() . "/js/jquery.plupload.queue/jquery.plupload.queue.js");
